@@ -27,4 +27,4 @@ A responsive car buying website with a Node.js backend and static frontend. The 
 
 ## Notes
 
-The site uses remote images for brand logos and cars so it loads quickly and can display real photo content.
+The site uses remote images for brand cars so it loads quickly and can display real photo content.
