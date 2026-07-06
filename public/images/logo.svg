@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 140" role="img" aria-labelledby="title">
+  <title>Indian Car Buy Logo</title>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <rect width="560" height="140" rx="30" fill="transparent" />
+  <path d="M50 90 C70 40, 130 20, 210 40 C260 50, 280 80, 310 90 C340 100, 410 90, 470 40" fill="none" stroke="#111827" stroke-width="12" stroke-linecap="round" />
+  <path d="M75 89 C90 108, 120 110, 150 90" fill="none" stroke="#111827" stroke-width="11" stroke-linecap="round" />
+  <circle cx="125" cy="95" r="12" fill="#111827" />
+  <circle cx="418" cy="95" r="12" fill="#111827" />
+  <text x="20" y="132" font-family="Inter, sans-serif" font-size="32" font-weight="700" fill="#111827">Indian Car Buy</text>
+  <text x="20" y="160" font-family="Inter, sans-serif" font-size="16" fill="#475569">Find Your Next Car</text>
+</svg>

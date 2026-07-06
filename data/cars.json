@@ -1,0 +1,220 @@
+[
+  {
+    "id": 1,
+    "brand": "Maruti Suzuki",
+    "model": "Swift",
+    "price": "₹6.10 Lakh",
+    "fuelType": "Petrol",
+    "transmission": "Manual",
+    "seats": 5,
+    "mileage": "23 kmpl",
+    "rating": 4.5,
+    "segment": "Hatchback",
+    "logoUrl": "https://fabrikbrands.com/wp-content/uploads/Suzuki-Logo-1a.png",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/630x420/Maruti/Swift/9226/1755777061785/front-left-side-47.jpg",
+    "description": "A city-friendly hatchback with strong mileage, modern features, and affordable pricing.",
+    "launchCategory": "Petrol",
+    "buyUrl": "https://www.marutisuzuki.com/arena/swift/price?utm_source=google_paidsearch&utm_medium=cpc_search_brand&utm_campaign=13868647126_ao&utm_term=swift%20all%20model%20price&utm_content=c&utm_network=g&gad_source=1",
+    "highlights": [
+      "Compact and easy to drive",
+      "Best-selling hatchback in India",
+      "Good resale value"
+    ]
+  },
+  {
+    "id": 2,
+    "brand": "Hyundai",
+    "model": "Creta",
+    "price": "₹11.05 Lakh",
+    "fuelType": "Petrol",
+    "transmission": "Automatic",
+    "seats": 5,
+    "mileage": "17 kmpl",
+    "rating": 4.6,
+    "segment": "SUV",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/Creta/8667/1755765115423/front-left-side-47.jpg",
+    "description": "A feature-rich compact SUV with premium comfort, flexible seating, and advanced safety technology.",
+    "launchCategory": "Petrol",
+    "buyUrl": "https://www.hyundai.com/in/en/suv/creta",
+    "highlights": [
+      "Stylish SUV design",
+      "Spacious cabin",
+      "Advanced infotainment features"
+    ]
+  },
+  {
+    "id": 3,
+    "brand": "Tata",
+    "model": "Nexon",
+    "price": "₹8.49 Lakh",
+    "fuelType": "Petrol",
+    "transmission": "Automatic",
+    "seats": 5,
+    "mileage": "20 kmpl",
+    "rating": 4.4,
+    "segment": "Compact SUV",
+    "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Tata_Motors_logo.svg/1200px-Tata_Motors_logo.svg.png",
+    "imageUrl": "https://imgd.aeplcdn.com/1056x594/n/4a9to8b_1933956.jpg?q=80",
+    "description": "A strong safety performer with bold styling and smart technology for urban and highway driving.",
+    "launchCategory": "Petrol",
+    "buyUrl": "https://cars.tatamotors.com/nexon/ice.html",
+    "highlights": [
+      "5-star Global NCAP rating",
+      "Modern cabin styling",
+      "Efficient engine options"
+    ]
+  },
+  {
+    "id": 4,
+    "brand": "Mahindra",
+    "model": "Scorpio N",
+    "price": "₹13.29 Lakh",
+    "fuelType": "Diesel",
+    "transmission": "Manual",
+    "seats": 7,
+    "mileage": "14 kmpl",
+    "rating": 4.3,
+    "segment": "SUV",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/630x420/Mahindra/Scorpio-N/10818/1755775730308/front-left-side-47.jpg",
+    "description": "A commanding SUV for family adventures, offering rugged performance and premium presence.",
+    "buyUrl": "https://auto.mahindra.com/suv/scorpio-n/SCN.html",
+    "highlights": [
+      "Powerful diesel engine",
+      "7-seater layout",
+      "Strong off-road capability"
+    ]
+  },
+  {
+    "id": 5,
+    "brand": "Honda",
+    "model": "City",
+    "price": "₹11.45 Lakh",
+    "fuelType": "Petrol",
+    "transmission": "Automatic",
+    "seats": 5,
+    "mileage": "18 kmpl",
+    "rating": 4.7,
+    "segment": "Sedan",
+    "logoUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-w03KKVIhkK4_SdUBbhEmJUd2LIMoWomj1fVZ0JmPOYt86ooeqhfRVUM&s=10",
+    "imageUrl": "https://imgd.aeplcdn.com/1280x720/n/cw/ec/219846/city-facelift-exterior-right-front-three-quarter-2.png?isig=0&q=80",
+    "description": "A premium sedan that blends comfort, performance, and prestigious styling for Indian roads.",
+    "launchCategory": "Petrol",
+    "buyUrl": "https://www.hondacarindia.com/city",
+    "highlights": [
+      "Smooth driving experience",
+      "Premium interior quality",
+      "Reliable brand reputation"
+    ]
+  },
+  {
+    "id": 6,
+    "brand": "Tata",
+    "model": "Nexon EV",
+    "price": "₹15.49 Lakh",
+    "fuelType": "Electric",
+    "transmission": "Automatic",
+    "seats": 5,
+    "range": "465 km",
+    "chargingTime": "0-80% in 60 min",
+    "rating": 4.6,
+    "segment": "Compact SUV",
+    "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Tata_Motors_logo.svg/1200px-Tata_Motors_logo.svg.png",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Nexon-EV/11024/1755845297648/front-left-side-47.jpg",
+    "description": "A leading electric SUV in India, offering long range, strong safety ratings, and modern infotainment.",
+    "launchCategory": "Electric",
+    "buyUrl": "https://ev.tatamotors.com/nexon/ev/price.html",
+    "highlights": [
+      "Up to 465 km driving range",
+      "5-star Global NCAP safety rating",
+      "Connected car features"
+    ]
+  },
+  {
+    "id": 7,
+    "brand": "MG",
+    "model": "ZS EV",
+    "price": "₹18.00 Lakh",
+    "fuelType": "Electric",
+    "transmission": "Automatic",
+    "seats": 5,
+    "range": "463 km",
+    "chargingTime": "0-80% in 50 min",
+    "rating": 4.4,
+    "segment": "SUV",
+    "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/MG_Motor_logo.svg/1200px-MG_Motor_logo.svg.png",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/930x620/MG/ZS-EV/11503/1755845485024/front-left-side-47.jpg",
+    "description": "An electric SUV built for modern Indian buyers, with premium comfort and fast charging support.",
+    "launchCategory": "Electric",
+    "buyUrl": "https://www.mgmotor.co.in/vehicles/mgzsev-electric-car-in-india",
+    "highlights": [
+      "Premium cabin with panoramic sunroof",
+      "Large touchscreen infotainment",
+      "Good range for city and highway use"
+    ]
+  },
+  {
+    "id": 8,
+    "brand": "Hyundai",
+    "model": "Kona Electric",
+    "price": "₹23.60 Lakh",
+    "fuelType": "Electric",
+    "transmission": "Automatic",
+    "seats": 5,
+    "range": "452 km",
+    "chargingTime": "0-80% in 57 min",
+    "rating": 4.5,
+    "segment": "Electric SUV",
+    "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Hyundai_logo.svg/1200px-Hyundai_logo.svg.png",
+    "imageUrl": "https://imgd.aeplcdn.com/1920x1080/n/cw/ec/29580/kona-electric-exterior-right-front-three-quarter-162254.jpeg?isig=0&wm=1&q=80&q=80",
+    "description": "A compact electric SUV with premium safety, responsive drive, and modern technology for Indian roads.",
+    "launchCategory": "Electric",
+    "buyUrl": "https://www.kunhyundai.com/kona-electric/",
+    "highlights": [
+      "Strong battery range",
+      "Smooth electric performance",
+      "Advanced driver assistance systems"
+    ]
+  },
+  {
+    "id": 9,
+    "brand": "Maruti Suzuki",
+    "model": "Ciaz CNG",
+    "price": "₹9.50 Lakh",
+    "fuelType": "CNG",
+    "transmission": "Manual",
+    "seats": 5,
+    "mileage": "28 km/kg",
+    "rating": 4.2,
+    "segment": "Sedan",
+    "imageUrl": "https://imgd.aeplcdn.com/1056x594/n/qx56isa_1467593.jpg?q=80",
+    "description": "A spacious CNG sedan with strong mileage and premium comfort for Indian families.",
+    "launchCategory": "CNG",
+    "buyUrl": "https://www.carwale.com/used/mumbai/maruti-suzuki-ciaz/",
+    "highlights": [
+      "Excellent fuel efficiency",
+      "Large cabin space",
+      "Reliable daily commuter"
+    ]
+  },
+  {
+    "id": 10,
+    "brand": "Tata",
+    "model": "Tiago CNG",
+    "price": "₹6.60 Lakh",
+    "fuelType": "CNG",
+    "transmission": "Manual",
+    "seats": 5,
+    "mileage": "26 km/kg",
+    "rating": 4.1,
+    "segment": "Hatchback",
+    "imageUrl": "https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Tiago/10655/1768302905210/front-left-side-47.jpg",
+    "description": "A compact CNG hatchback that offers value, efficiency, and easy city driving.",
+    "launchCategory": "CNG",
+    "buyUrl": "https://cars.tatamotors.com/tiago/ice/cng.html",
+    "highlights": [
+      "Budget-friendly CNG choice",
+      "Great city drivability",
+      "Modern features"
+    ]
+  }
+]

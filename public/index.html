@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Car Buy | Find Your Next Car</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/logo.svg" alt="Indian Car Buy Logo" class="logo">
+        <div>
+          <h1>Find Your Next New Car</h1>
+          <p>Discover new cars with real Indian prices and buyer-ready details.</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <div class="nav-search">
+          <input id="carSearch" type="search" placeholder="Search cars" aria-label="Search cars">
+        </div>
+        <a href="#cars">Cars</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Best deals in India</span>
+          <h2>Buy your next car with confidence</h2>
+          <p>Explore verified car listings, compare top brands, and choose the right model for city and family driving.</p>
+          <div class="hero-actions">
+            <a href="#cars" class="btn btn-primary">Browse Cars</a>
+            <a href="#contact" class="btn btn-secondary">Get Assistance</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://www.pngitem.com/pimgs/m/21-218755_group-of-cars-png-transparent-png.png">
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section section-features">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">What we offer</p>
+          <h2>Everything you need to choose the perfect car</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Verified Car Data</h3>
+            <p>Indian prices, brand specs, mileage details, and real model highlights in one place.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Responsive Design</h3>
+            <p>Works great on mobiles, tablets, and desktop screens for seamless browsing.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Fast Loading</h3>
+            <p>Backend API and optimized frontend ensure quick access to car information.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-launched">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Newly launched</p>
+          <h2>Latest cars launched in India</h2>
+        </div>
+        <div class="launch-cards">
+          <article class="launch-card launch-electric">
+            <h3>Electric Cars</h3>
+            <p>Modern EVs with long range and fast charging.</p>
+          </article>
+          <article class="launch-card launch-cng">
+            <h3>CNG Cars</h3>
+            <p>Budget-friendly fuel-efficient CNG hatchbacks and sedans.</p>
+          </article>
+          <article class="launch-card launch-petrol">
+            <h3>Petrol Cars</h3>
+            <p>Stylish petrol-powered cars with premium features.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cars" class="section section-cars">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Popular cars</p>
+          <h2>Top car models available now</h2>
+        </div>
+        <div class="filters">
+          <div class="filter-group">
+            <label for="brandFilter">Brand</label>
+            <select id="brandFilter">
+              <option value="all">All Brands</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="fuelFilter">Fuel</label>
+            <select id="fuelFilter">
+              <option value="all">All Fuel Types</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
+              <option value="CNG">CNG</option>
+              <option value="Electric">Electric</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="carGrid" class="car-grid"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section-contact">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <h2>Ready to find your car?</h2>
+          <p>Contact our team for expert advice, test drive scheduling, and best price recommendations.</p>
+          <ul class="contact-details">
+            <li><strong>Email:</strong> support@carbuyindia.com</li>
+            <li><strong>Phone:</strong> +91 83695 50242</li>
+            <li><strong>Location:</strong> Mumbai, India</li>
+          </ul>
+        </div>
+        <form id="contactForm" class="contact-form">
+          <label>Full Name<input type="text" name="name" placeholder="Your name" required></label>
+          <label>Email<input type="email" name="email" placeholder="Your email" required></label>
+          <label>Message<textarea name="message" rows="5" placeholder="Your query"></textarea></label>
+          <button type="submit" class="btn btn-primary">Send Inquiry</button>
+          <p id="contactStatus" class="contact-status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 CarBuy India. Designed for Indian car buyers.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
