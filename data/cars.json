@@ -19,7 +19,21 @@
       "Compact and easy to drive",
       "Best-selling hatchback in India",
       "Good resale value"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Maruti+Suzuki+Swift",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹5.78 Lakh",
+        "url": "https://www.marutisuzuki.com/arena/swift/price?utm_source=google_paidsearch&utm_medium=cpc_search_brand&utm_campaign=13868647126_ao&utm_term=swift%20all%20model%20price&utm_content=c&utm_network=g&gad_source=1"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹6.83 Lakh",
+        "url": "https://www.carwale.com/maruti-suzuki-cars/swift/"
+      }
+    ],
+    "cc": "1197 cc"
   },
   {
     "id": 2,
@@ -40,7 +54,21 @@
       "Stylish SUV design",
       "Spacious cabin",
       "Advanced infotainment features"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Hyundai+Creta",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹10.90 Lakh",
+        "url": "https://www.hyundai.com/in/en/find-a-car/creta/highlights"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹12.98 Lakh",
+        "url": "https://www.carwale.com/hyundai-cars/creta/"
+      }
+    ],
+    "cc": "1497 cc"
   },
   {
     "id": 3,
@@ -62,7 +90,21 @@
       "5-star Global NCAP rating",
       "Modern cabin styling",
       "Efficient engine options"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Tata+Nexon",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹7.39 Lakh",
+        "url": "https://cars.tatamotors.com/nexon/ice.html"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹8.70 Lakh",
+        "url": "https://www.carwale.com/tata-cars/nexon/"
+      }
+    ],
+    "cc": "1199 cc"
   },
   {
     "id": 4,
@@ -82,7 +124,21 @@
       "Powerful diesel engine",
       "7-seater layout",
       "Strong off-road capability"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Mahindra+Scorpio+N",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹13.49 Lakh",
+        "url": "https://auto.mahindra.com/suv/scorpio-n/SCN.html"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹13.49 Lakh",
+        "url": "https://www.carwale.com/mahindra-cars/scorpio-n/"
+      }
+    ],
+    "cc": "1997 cc"
   },
   {
     "id": 5,
@@ -104,7 +160,21 @@
       "Smooth driving experience",
       "Premium interior quality",
       "Reliable brand reputation"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Honda+City",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹11.99 Lakh",
+        "url": "https://www.hondacarindia.com/honda-city"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹12.09 Lakh",
+        "url": "https://www.carwale.com/honda-cars/city/price-in-mumbai/"
+      }
+    ],
+    "cc": "1498 cc"
   },
   {
     "id": 6,
@@ -127,7 +197,21 @@
       "Up to 465 km driving range",
       "5-star Global NCAP safety rating",
       "Connected car features"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Tata+Nexon+EV",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹12.49 Lakh",
+        "url": "https://ev.tatamotors.com/nexon/ev/price.html"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹13.22 Lakh",
+        "url": "https://www.carwale.com/tata-cars/nexon-ev/"
+      }
+    ],
+    "cc": "Electric"
   },
   {
     "id": 7,
@@ -150,7 +234,21 @@
       "Premium cabin with panoramic sunroof",
       "Large touchscreen infotainment",
       "Good range for city and highway use"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=MG+ZS+EV",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹18.00 Lakh",
+        "url": "https://www.mgmotor.co.in/vehicles/mgzsev-electric-car-in-india"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹19.28 Lakh",
+        "url": "https://www.carwale.com/mg-cars/zs-ev/"
+      }
+    ],
+    "cc": "Electric"
   },
   {
     "id": 8,
@@ -173,7 +271,21 @@
       "Strong battery range",
       "Smooth electric performance",
       "Advanced driver assistance systems"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Hyundai+Kona+Electric",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹23.60 Lakh",
+        "url": "https://www.hyundai.com/uk/en/models/kona-electric.html"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹25.11 Lakh",
+        "url": "https://www.carwale.com/hyundai-cars/kona-electric/"
+      }
+    ],
+    "cc": "Electric"
   },
   {
     "id": 9,
@@ -194,7 +306,21 @@
       "Excellent fuel efficiency",
       "Large cabin space",
       "Reliable daily commuter"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Maruti+Suzuki+Ciaz+CNG",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹9.50 Lakh",
+        "url": "https://www.carwale.com/used/mumbai/maruti-suzuki-ciaz/"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹9.48 Lakh",
+        "url": "https://www.carwale.com/maruti-suzuki-cars/ciaz/"
+      }
+    ],
+    "cc": "1197 cc"
   },
   {
     "id": 10,
@@ -215,6 +341,20 @@
       "Budget-friendly CNG choice",
       "Great city drivability",
       "Modern features"
-    ]
+    ],
+    "carWaleUrl": "https://www.carwale.com/search?q=Tata+Tiago+CNG",
+    "offers": [
+      {
+        "platform": "Official Website",
+        "price": "₹5.79 Lakh",
+        "url": "https://cars.tatamotors.com/tiago/ice/cng.html"
+      },
+      {
+        "platform": "CarWale",
+        "price": "₹6.68 Lakh",
+        "url": "https://www.carwale.com/tata-cars/tiago/cng/"
+      }
+    ],
+    "cc": "1199 cc"
   }
 ]

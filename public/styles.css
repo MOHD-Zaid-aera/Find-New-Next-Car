@@ -269,6 +269,44 @@ img {
   background: white;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   scroll-margin-top: 110px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.car-card:hover,
+.car-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+}
+
+.car-summary p {
+  color: #475569;
+}
+
+.car-summary .car-specs {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.car-summary .highlights {
+  margin: 0.75rem 0;
+  padding-inline-start: 1.2rem;
+  color: #334155;
+}
+
+.car-summary .summary-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.car-summary .car-meta p:nth-child(n + 3) {
+  display: none;
+}
+
+.car-summary .highlights li:nth-child(n + 2) {
+  display: none;
 }
 
 .car-card.highlight-match {
@@ -355,11 +393,13 @@ img {
 
 .product-detail {
   padding: 3rem 0;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 .product-main {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   align-items: start;
 }
@@ -380,6 +420,10 @@ img {
 .product-summary {
   display: grid;
   gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: white;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
 }
 
 .product-summary h2 {
@@ -393,7 +437,7 @@ img {
 
 .product-meta {
   display: grid;
-  gap: 0.65rem;
+  gap: 1rem;
 }
 
 .product-meta div {
@@ -433,6 +477,48 @@ img {
   color: #2563eb;
 }
 
+.offer-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.offer-card {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  background: #ffffff;
+  display: grid;
+  gap: 1rem;
+}
+
+.offer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.offer-platform {
+  font-weight: 700;
+  color: #111827;
+}
+
+.offer-price {
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.btn-offer {
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  .offer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .btn-back {
   display: inline-flex;
   margin-bottom: 1.5rem;
@@ -440,6 +526,10 @@ img {
 
 @media (max-width: 960px) {
   .product-main {
+    grid-template-columns: 1fr;
+  }
+
+  .offer-grid {
     grid-template-columns: 1fr;
   }
 }

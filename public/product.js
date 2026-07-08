@@ -5,6 +5,31 @@ function getQueryParam(name) {
   return params.get(name);
 }
 
+function getCarWaleUrl(car) {
+  if (car.carWaleUrl) {
+    return car.carWaleUrl;
+  }
+  const searchTerm = `${car.brand} ${car.model}`.trim();
+  return `https://www.carwale.com/search?q=${encodeURIComponent(searchTerm)}`;
+}
+
+function renderOfferCards(car) {
+  const offers = car.offers || [
+    { platform: 'Official Website', price: car.price, url: car.buyUrl },
+    { platform: 'CarWale', price: car.price, url: getCarWaleUrl(car) }
+  ];
+
+  return offers.map(offer => `
+    <div class="offer-card">
+      <div class="offer-card-header">
+        <span class="offer-platform">${offer.platform}</span>
+        <span class="offer-price">${offer.price}</span>
+      </div>
+      <a class="btn btn-primary btn-offer" href="${offer.url}" target="_blank" rel="noopener noreferrer">Buy on ${offer.platform}</a>
+    </div>
+  `).join('');
+}
+
 function createDetailView(car, ratings) {
   const rangeLine = car.fuelType === 'Electric' ? `Range: ${car.range}` : `Mileage: ${car.mileage}`;
   const chargeLine = car.fuelType === 'Electric' ? `<div class="spec-item"><strong>Charging:</strong> ${car.chargingTime}</div>` : '';
@@ -36,6 +61,7 @@ function createDetailView(car, ratings) {
           <div>
             <p><strong>Price:</strong> ${car.price}</p>
             <p><strong>${rangeLine}</strong></p>
+            <p><strong>Engine:</strong> ${car.cc || 'N/A'}</p>
             <p><strong>Seats:</strong> ${car.seats}</p>
             <p><strong>Fuel type:</strong> ${car.fuelType}</p>
           </div>
@@ -46,13 +72,10 @@ function createDetailView(car, ratings) {
           </div>
         </div>
         <div>
-          <h3>Highlights</h3>
-          <ul class="product-highlights">
-            ${car.highlights.map(item => `<li>${item}</li>`).join('')}
-          </ul>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-primary btn-buy" href="${car.buyUrl}" target="_blank" rel="noopener noreferrer">Buy Now</a>
+          <h3>Pricing offers</h3>
+          <div class="offer-grid">
+            ${renderOfferCards(car)}
+          </div>
         </div>
         <div class="rating-panel">
           <h3>Rate this car</h3>

@@ -8,36 +8,37 @@ function createCard(car) {
   const card = document.createElement('article');
   card.className = 'car-card';
   const mileageLine = car.fuelType === 'Electric' ? `Range: ${car.range}` : `Mileage: ${car.mileage}`;
-  const chargeLine = car.fuelType === 'Electric' ? `<div class="spec-item">Charging: ${car.chargingTime}</div>` : '';
+  const shortDescription = car.description.length > 100 ? `${car.description.slice(0, 100)}...` : car.description;
+  const firstHighlight = car.highlights[0] ? `<li>${car.highlights[0]}</li>` : '';
+
   card.innerHTML = `
     <img src="${car.imageUrl}" alt="${car.brand} ${car.model}" loading="lazy" onerror="this.onerror=null;this.src='images/car-placeholder.svg'" />
     <div class="car-card-header">
       <div>
         <h3>${car.brand} ${car.model}</h3>
-        <p>${car.segment} · ${car.transmission} · ${car.fuelType}</p>
+        <p>${car.segment} · ${car.fuelType}</p>
       </div>
     </div>
-    <div class="car-details">
+    <div class="car-details car-summary">
       <div class="car-meta">
         <p><strong>Price:</strong> ${car.price}</p>
         <p><strong>${mileageLine}</strong></p>
-        <p><strong>Seats:</strong> ${car.seats}</p>
-        <p><strong>Rating:</strong> ${car.rating} / 5</p>
       </div>
-      <p>${car.description}</p>
-      <div class="car-specs">
-        <div class="spec-item">Fuel: ${car.fuelType}</div>
-        <div class="spec-item">Transmission: ${car.transmission}</div>
-        ${chargeLine}
-      </div>
+      <p>${shortDescription}</p>
       <ul class="highlights">
-        ${car.highlights.map(item => `<li>${item}</li>`).join('')}
+        ${firstHighlight}
       </ul>
-      <div class="card-actions">
-        <a class="btn btn-secondary btn-details" href="product.html?id=${car.id}">View Details</a>
-      </div>
     </div>
   `;
+  card.addEventListener('click', () => {
+    window.location.href = `product.html?id=${car.id}`;
+  });
+  card.tabIndex = 0;
+  card.addEventListener('keypress', event => {
+    if (event.key === 'Enter') {
+      window.location.href = `product.html?id=${car.id}`;
+    }
+  });
   return card;
 }
 
