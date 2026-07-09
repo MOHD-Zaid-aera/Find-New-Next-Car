@@ -33,6 +33,7 @@ function renderOfferCards(car) {
 function createDetailView(car, ratings) {
   const rangeLine = car.fuelType === 'Electric' ? `Range: ${car.range}` : `Mileage: ${car.mileage}`;
   const chargeLine = car.fuelType === 'Electric' ? `<div class="spec-item"><strong>Charging:</strong> ${car.chargingTime}</div>` : '';
+  const tankLine = car.fuelType === 'Electric' ? `<p><strong>Battery Capacity:</strong> ${car.batteryCapacity || 'N/A'}</p>` : `<p><strong>Fuel Tank:</strong> ${car.fuelTankCapacity || 'N/A'}</p>`;
   const carRatings = ratings.filter(r => Number(r.carId) === Number(car.id));
   const averageRating = carRatings.length
     ? (carRatings.reduce((sum, item) => sum + item.score, 0) / carRatings.length).toFixed(1)
@@ -62,6 +63,7 @@ function createDetailView(car, ratings) {
             <p><strong>Price:</strong> ${car.price}</p>
             <p><strong>${rangeLine}</strong></p>
             <p><strong>Engine:</strong> ${car.cc || 'N/A'}</p>
+            ${tankLine}
             <p><strong>Seats:</strong> ${car.seats}</p>
             <p><strong>Fuel type:</strong> ${car.fuelType}</p>
           </div>

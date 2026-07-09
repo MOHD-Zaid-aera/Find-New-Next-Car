@@ -31,9 +31,15 @@
         "platform": "CarWale",
         "price": "₹6.83 Lakh",
         "url": "https://www.carwale.com/maruti-suzuki-cars/swift/"
+      },
+      {
+        "platform": "CarDekho",
+        "price": "₹6.10 Lakh",
+        "url": "https://www.cardekho.com/maruti-suzuki/swift"
       }
     ],
-    "cc": "1197 cc"
+    "cc": "1996 cc",
+    "fuelTankCapacity": "37 L"
   },
   {
     "id": 2,
@@ -65,10 +71,15 @@
       {
         "platform": "CarWale",
         "price": "₹12.98 Lakh",
-        "url": "https://www.carwale.com/hyundai-cars/creta/"
+        "url": "https://www.carwale.com/hyundai-cars/creta/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹11.05 Lakh",
+        "url": "https://www.cardekho.com/hyundai/creta"
       }
     ],
-    "cc": "1497 cc"
+    "cc": "1497 cc",
+    "fuelTankCapacity": "50 L"
   },
   {
     "id": 3,
@@ -101,10 +112,14 @@
       {
         "platform": "CarWale",
         "price": "₹8.70 Lakh",
-        "url": "https://www.carwale.com/tata-cars/nexon/"
-      }
+        "url": "https://www.carwale.com/tata-cars/nexon/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹8.49 Lakh",
+        "url": "https://www.cardekho.com/tata/nexon"      }
     ],
-    "cc": "1199 cc"
+    "cc": "1199 cc",
+    "fuelTankCapacity": "44 L"
   },
   {
     "id": 4,
@@ -135,10 +150,14 @@
       {
         "platform": "CarWale",
         "price": "₹13.49 Lakh",
-        "url": "https://www.carwale.com/mahindra-cars/scorpio-n/"
-      }
+        "url": "https://www.carwale.com/mahindra-cars/scorpio-n/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹13.29 Lakh",
+        "url": "https://www.cardekho.com/mahindra/scorpio-n"      }
     ],
-    "cc": "1997 cc"
+    "cc": "1497 cc",
+    "fuelTankCapacity": "62 L"
   },
   {
     "id": 5,
@@ -172,9 +191,14 @@
         "platform": "CarWale",
         "price": "₹12.09 Lakh",
         "url": "https://www.carwale.com/honda-cars/city/price-in-mumbai/"
-      }
+      },
+      {
+        "platform": "CarDekho",
+        "price": "₹11.45 Lakh",
+        "url": "https://www.cardekho.com/honda/city"      }
     ],
-    "cc": "1498 cc"
+    "cc": "1498 cc",
+    "fuelTankCapacity": "40 L"
   },
   {
     "id": 6,
@@ -208,10 +232,14 @@
       {
         "platform": "CarWale",
         "price": "₹13.22 Lakh",
-        "url": "https://www.carwale.com/tata-cars/nexon-ev/"
-      }
+        "url": "https://www.carwale.com/tata-cars/nexon-ev/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹15.49 Lakh",
+        "url": "https://www.cardekho.com/tata/nexon-ev"      }
     ],
-    "cc": "Electric"
+    "cc": "Electric",
+    "batteryCapacity": "48 kWh"
   },
   {
     "id": 7,
@@ -245,10 +273,14 @@
       {
         "platform": "CarWale",
         "price": "₹19.28 Lakh",
-        "url": "https://www.carwale.com/mg-cars/zs-ev/"
-      }
+        "url": "https://www.carwale.com/mg-cars/zs-ev/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹18.00 Lakh",
+        "url": "https://www.cardekho.com/mg/zs-ev"      }
     ],
-    "cc": "Electric"
+    "cc": "Electric",
+    "batteryCapacity": "50 kWh"
   },
   {
     "id": 8,
@@ -282,10 +314,14 @@
       {
         "platform": "CarWale",
         "price": "₹25.11 Lakh",
-        "url": "https://www.carwale.com/hyundai-cars/kona-electric/"
-      }
+        "url": "https://www.carwale.com/hyundai-cars/kona-electric/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹23.60 Lakh",
+        "url": "https://www.cardekho.com/hyundai/kona-electric"      }
     ],
-    "cc": "Electric"
+    "cc": "Electric",
+    "batteryCapacity": "39 kWh"
   },
   {
     "id": 9,
@@ -317,10 +353,14 @@
       {
         "platform": "CarWale",
         "price": "₹9.48 Lakh",
-        "url": "https://www.carwale.com/maruti-suzuki-cars/ciaz/"
-      }
+        "url": "https://www.carwale.com/maruti-suzuki-cars/ciaz/"      },
+      {
+        "platform": "CarDekho",
+        "price": "₹9.50 Lakh",
+        "url": "https://www.cardekho.com/maruti-suzuki/ciaz"      }
     ],
-    "cc": "1197 cc"
+    "cc": "1197 cc",
+    "fuelTankCapacity": "40 L"
   },
   {
     "id": 10,
@@ -353,8 +393,14 @@
         "platform": "CarWale",
         "price": "₹6.68 Lakh",
         "url": "https://www.carwale.com/tata-cars/tiago/cng/"
+      },
+      {
+        "platform": "CarDekho",
+        "price": "₹6.60 Lakh",
+        "url": "https://www.cardekho.com/tata/tiago"
       }
     ],
-    "cc": "1199 cc"
+    "cc": "1199 cc",
+    "fuelTankCapacity": "37 L"
   }
 ]
