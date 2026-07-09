@@ -758,9 +758,7 @@ img {
   }
 
   .brand p {
-    font-size: 0.65rem;
-    margin-top: 0;
-    line-height: 1.2;
+    display: none;
   }
 
   .brand > div {
@@ -770,8 +768,8 @@ img {
   .hamburger {
     display: flex;
     position: absolute;
-    right: 1rem;
-    top: 1rem;
+    right: 0.75rem;
+    top: 0.5rem;
   }
 
   .nav-links {
@@ -783,7 +781,7 @@ img {
     border-bottom: 1px solid #e5e7eb;
     flex-direction: column;
     gap: 0;
-    padding: 0.75rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
@@ -801,10 +799,11 @@ img {
   }
 
   .nav-search input {
-    min-width: 100%;
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
   }
 
   .nav-links a {
@@ -835,3 +834,49 @@ img {
     gap: 0.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 0.4rem 0;
+  }
+
+  .brand {
+    gap: 0.35rem;
+  }
+
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand h1 {
+    font-size: 0.85rem;
+  }
+
+  .hamburger {
+    right: 0.5rem;
+    top: 0.4rem;
+    gap: 3px;
+    padding: 0.3rem;
+  }
+
+  .hamburger span {
+    width: 20px;
+    height: 1.5px;
+  }
+
+  .nav-links {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .nav-search input {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .nav-links a {
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
+  }
+}
+
