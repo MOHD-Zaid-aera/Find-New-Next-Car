@@ -43,13 +43,13 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .logo {
@@ -82,14 +82,14 @@ img {
   background: none;
   border: none;
   cursor: pointer;
-  gap: 6px;
-  padding: 0.5rem;
+  gap: 4px;
+  padding: 0.4rem;
   z-index: 11;
 }
 
 .hamburger span {
-  width: 24px;
-  height: 2.5px;
+  width: 22px;
+  height: 2px;
   background: #111827;
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -733,32 +733,34 @@ img {
 
 @media (max-width: 700px) {
   .header-inner {
-    gap: 0.75rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
     align-items: stretch;
+    padding: 0.5rem 0;
   }
 
   .brand {
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
     display: flex;
     align-items: center;
   }
 
   .logo {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
   }
 
   .brand h1 {
-    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-size: 0.95rem;
     margin: 0;
   }
 
   .brand p {
-    font-size: 0.8rem;
-    margin-top: 0.1rem;
+    font-size: 0.65rem;
+    margin-top: 0;
+    line-height: 1.2;
   }
 
   .brand > div {
@@ -781,7 +783,7 @@ img {
     border-bottom: 1px solid #e5e7eb;
     flex-direction: column;
     gap: 0;
-    padding: 1rem 1rem;
+    padding: 0.75rem 0.75rem;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
@@ -795,21 +797,21 @@ img {
 
   .nav-search {
     width: 100%;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .nav-search input {
     min-width: 100%;
     width: 100%;
-    padding: 0.6rem 0.85rem;
-    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
   }
 
   .nav-links a {
-    padding: 0.75rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid #f3f4f6;
     display: block;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .nav-links a:last-child {
