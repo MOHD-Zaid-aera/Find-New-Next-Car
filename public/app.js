@@ -1,3 +1,30 @@
+// Mobile menu toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navMenu = document.getElementById('navMenu');
+
+if (mobileMenuBtn) {
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+
+  // Close menu when a link is clicked
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenuBtn.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.site-header')) {
+      mobileMenuBtn.classList.remove('active');
+      navMenu.classList.remove('active');
+    }
+  });
+}
+
 const carGrid = document.getElementById('carGrid');
 const brandFilter = document.getElementById('brandFilter');
 const fuelFilter = document.getElementById('fuelFilter');
