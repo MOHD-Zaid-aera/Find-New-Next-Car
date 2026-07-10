@@ -19,13 +19,19 @@
           <p>Discover new cars with real Indian prices and buyer-ready details.</p>
         </div>
       </div>
+      <button class="search-toggle" id="searchToggleBtn" aria-label="Toggle search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
       <button class="hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
         <span></span>
         <span></span>
         <span></span>
       </button>
       <nav class="nav-links" id="navMenu">
-        <div class="nav-search">
+        <div class="nav-search" id="mobileSearch">
           <input id="carSearch" type="search" placeholder="Search cars" aria-label="Search cars">
         </div>
         <a href="#cars">Cars</a>

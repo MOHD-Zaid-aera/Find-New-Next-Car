@@ -87,6 +87,22 @@ img {
   z-index: 11;
 }
 
+.search-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #111827;
+  z-index: 11;
+}
+
+.search-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
 .hamburger span {
   width: 22px;
   height: 2px;
@@ -763,6 +779,13 @@ img {
 
   .brand > div {
     flex: 1;
+  }
+
+  .search-toggle {
+    display: flex;
+    position: absolute;
+    right: 3.2rem;
+    top: 0.5rem;
   }
 
   .hamburger {
