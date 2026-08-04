@@ -108,6 +108,25 @@ app.get('/api/cars', (req, res) => {
   res.json(loadCars());
 });
 
+app.get('/api/inquiries', requireAdmin, (req, res) => {
+  try {
+    const inquiries = fs.existsSync(contactsFile)
+      ? JSON.parse(fs.readFileSync(contactsFile, 'utf8'))
+      : [];
+
+    const sortedInquiries = [...inquiries].sort((a, b) => {
+      const aTime = new Date(a.submittedAt || 0).getTime();
+      const bTime = new Date(b.submittedAt || 0).getTime();
+      return bTime - aTime;
+    });
+
+    res.json(sortedInquiries);
+  } catch (error) {
+    console.error('Failed to load inquiries:', error);
+    res.status(500).json({ error: 'Unable to load inquiries.' });
+  }
+});
+
 app.get('/login', (req, res) => {
   res.redirect('/login.html');
 });

@@ -2,7 +2,7 @@
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navMenu = document.getElementById('navMenu');
 
-if (mobileMenuBtn) {
+if (mobileMenuBtn && navMenu) {
   mobileMenuBtn.addEventListener('click', () => {
     mobileMenuBtn.classList.toggle('active');
     navMenu.classList.toggle('active');
@@ -30,7 +30,33 @@ const brandFilter = document.getElementById('brandFilter');
 const fuelFilter = document.getElementById('fuelFilter');
 const searchInput = document.getElementById('carSearch');
 const searchToggleBtn = document.getElementById('searchToggleBtn');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
 let cars = [];
+
+function initThemeToggle() {
+  if (!themeToggleBtn) {
+    return;
+  }
+
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+  themeToggleBtn.querySelector('.theme-toggle-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+  themeToggleBtn.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    themeToggleBtn.querySelector('.theme-toggle-icon').textContent = isDark ? '☀️' : '🌙';
+  });
+}
+
+function applyStoredTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+  const toggleIcon = document.querySelector('.theme-toggle-icon');
+  if (toggleIcon) {
+    toggleIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  }
+}
 
 function initSearchToggle() {
   if (!searchToggleBtn || !searchInput) {
@@ -62,6 +88,10 @@ function initSearchToggle() {
 }
 
 function createCard(car) {
+  if (!carGrid) {
+    return null;
+  }
+
   const card = document.createElement('article');
   card.className = 'car-card';
   const mileageLine = car.fuelType === 'Electric' ? `Range: ${car.range}` : `Mileage: ${car.mileage}`;
@@ -100,6 +130,10 @@ function createCard(car) {
 }
 
 function renderCars(list) {
+  if (!carGrid) {
+    return;
+  }
+
   carGrid.innerHTML = '';
   if (!list.length) {
     carGrid.innerHTML = '<p class="empty-state">No cars match the selected filters.</p>';
@@ -129,6 +163,10 @@ function scrollToFirstMatch(list) {
 }
 
 function populateBrandFilter(carsList) {
+  if (!brandFilter) {
+    return;
+  }
+
   const brands = [...new Set(carsList.map(car => car.brand))].sort();
   brands.forEach(brand => {
     const option = document.createElement('option');
@@ -139,6 +177,10 @@ function populateBrandFilter(carsList) {
 }
 
 function applyFilters() {
+  if (!carGrid || !brandFilter || !fuelFilter || !searchInput) {
+    return;
+  }
+
   const selectedBrand = brandFilter.value;
   const selectedFuel = fuelFilter.value;
   const searchTerm = (searchInput?.value || '').trim().toLowerCase();
@@ -155,6 +197,10 @@ function applyFilters() {
 }
 
 async function loadCars() {
+  if (!carGrid) {
+    return;
+  }
+
   try {
     const response = await fetch('/api/cars');
     cars = await response.json();
@@ -166,10 +212,20 @@ async function loadCars() {
   }
 }
 
-brandFilter.addEventListener('change', applyFilters);
-fuelFilter.addEventListener('change', applyFilters);
-searchInput?.addEventListener('input', applyFilters);
+if (brandFilter) {
+  brandFilter.addEventListener('change', applyFilters);
+}
 
+if (fuelFilter) {
+  fuelFilter.addEventListener('change', applyFilters);
+}
+
+if (searchInput) {
+  searchInput.addEventListener('input', applyFilters);
+}
+
+applyStoredTheme();
+initThemeToggle();
 initSearchToggle();
 loadCars();
 

@@ -19,8 +19,19 @@
           <p>Add new car products to the website directly.</p>
         </div>
       </div>
-      <nav class="nav-links">
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme" title="Switch theme">
+        <span class="theme-toggle-icon">☀️</span>
+      </button>
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navMenu">
         <a href="index.html">Home</a>
+        <a href="index.html#cars">Cars</a>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#contact">Contact</a>
         <a href="admin.html">Admin</a>
       </nav>
     </div>
@@ -48,11 +59,58 @@
         <p id="adminStatus" class="contact-status"></p>
       </form>
     </section>
+
+    <section class="section">
+      <h2>Customer Inquiries</h2>
+      <div id="inquiriesList" class="inquiry-list"></div>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 CarBuy India. Admin management dashboard.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
   <script>
     const form = document.getElementById('adminCarForm');
     const status = document.getElementById('adminStatus');
+    const inquiriesList = document.getElementById('inquiriesList');
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;');
+    }
+
+    async function loadInquiries() {
+      try {
+        const response = await fetch('/api/inquiries');
+        const inquiries = await response.json();
+        if (!response.ok) throw new Error('Unable to load inquiries');
+
+        if (!inquiries.length) {
+          inquiriesList.innerHTML = '<p class="empty-state">No inquiries yet.</p>';
+          return;
+        }
+
+        inquiriesList.innerHTML = inquiries.map(inquiry => `
+          <article class="inquiry-card">
+            <div class="inquiry-card-header">
+              <h3>${escapeHtml(inquiry.name || 'Unknown')}</h3>
+              <span>${escapeHtml(new Date(inquiry.submittedAt || Date.now()).toLocaleString())}</span>
+            </div>
+            <p><strong>Email:</strong> ${escapeHtml(inquiry.email || 'N/A')}</p>
+            <p><strong>Message:</strong> ${escapeHtml(inquiry.message || '')}</p>
+          </article>
+        `).join('');
+      } catch (error) {
+        inquiriesList.innerHTML = '<p class="empty-state">Unable to load inquiries right now.</p>';
+      }
+    }
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -89,6 +147,8 @@
         status.style.color = '#dc2626';
       }
     });
+
+    loadInquiries();
   </script>
 </body>
 </html>

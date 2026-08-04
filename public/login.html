@@ -19,8 +19,20 @@
           <p>Only authorized admins can access the dashboard.</p>
         </div>
       </div>
-      <nav class="nav-links">
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme" title="Switch theme">
+        <span class="theme-toggle-icon">☀️</span>
+      </button>
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navMenu">
         <a href="index.html">Home</a>
+        <a href="index.html#cars">Cars</a>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
       </nav>
     </div>
   </header>
@@ -36,6 +48,13 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 CarBuy India. Secure admin access.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
   <script>
     const form = document.getElementById('loginForm');
     const status = document.getElementById('loginStatus');

@@ -19,8 +19,20 @@
           <p>Car details and purchase information.</p>
         </div>
       </div>
-      <nav class="nav-links">
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme" title="Switch theme">
+        <span class="theme-toggle-icon">☀️</span>
+      </button>
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navMenu">
         <a href="index.html">Home</a>
+        <a href="index.html#cars">Cars</a>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
       </nav>
     </div>
   </header>
@@ -30,6 +42,7 @@
     <div id="productContent"></div>
   </main>
 
+  <script src="app.js"></script>
   <script src="product.js"></script>
 </body>
 </html>
