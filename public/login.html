@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/logo.svg" alt="Indian Car Buy Logo" class="logo">
+        <div>
+          <h1>Admin Login</h1>
+          <p>Only authorized admins can access the dashboard.</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container admin-page">
+    <section class="section">
+      <form id="loginForm" class="admin-form">
+        <label>Username<input name="username" required></label>
+        <label>Password<input name="password" type="password" required></label>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <p id="loginStatus" class="contact-status"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const status = document.getElementById('loginStatus');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = 'Checking credentials...';
+      status.style.color = '#111827';
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: formData.get('username'),
+            password: formData.get('password')
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Login failed');
+
+        window.location.href = '/admin.html';
+      } catch (error) {
+        status.textContent = error.message;
+        status.style.color = '#dc2626';
+      }
+    });
+  </script>
+</body>
+</html>

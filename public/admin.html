@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Add Car</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/logo.svg" alt="Indian Car Buy Logo" class="logo">
+        <div>
+          <h1>Admin Panel</h1>
+          <p>Add new car products to the website directly.</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container admin-page">
+    <section class="section">
+      <h2>Add a New Car</h2>
+      <form id="adminCarForm" class="admin-form">
+        <label>Brand<input name="brand" required></label>
+        <label>Model<input name="model" required></label>
+        <label>Price<input name="price" required></label>
+        <label>Fuel Type<select name="fuelType" required>
+          <option value="Petrol">Petrol</option>
+          <option value="Diesel">Diesel</option>
+          <option value="CNG">CNG</option>
+          <option value="Electric">EV / Electric</option>
+        </select></label>
+        <label>Segment<input name="segment" placeholder="SUV / Hatchback / Sedan"></label>
+        <label>Mileage<input name="mileage" placeholder="23 kmpl"></label>
+        <label>Image URL<input name="imageUrl" placeholder="https://..."></label>
+        <label>Description<textarea name="description" required></textarea></label>
+        <label>Highlights<input name="highlights" placeholder="Feature 1, Feature 2"></label>
+        <button type="submit" class="btn btn-primary">Publish Car</button>
+        <p id="adminStatus" class="contact-status"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('adminCarForm');
+    const status = document.getElementById('adminStatus');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = 'Publishing...';
+      status.style.color = '#111827';
+
+      const formData = new FormData(form);
+      const payload = {
+        brand: formData.get('brand'),
+        model: formData.get('model'),
+        price: formData.get('price'),
+        fuelType: formData.get('fuelType'),
+        segment: formData.get('segment') || 'New',
+        mileage: formData.get('mileage') || 'N/A',
+        imageUrl: formData.get('imageUrl') || 'images/car-placeholder.svg',
+        description: formData.get('description'),
+        highlights: formData.get('highlights')
+      };
+
+      try {
+        const response = await fetch('/api/cars', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Failed to publish car');
+
+        status.textContent = 'Car published successfully.';
+        status.style.color = '#16a34a';
+        form.reset();
+      } catch (error) {
+        status.textContent = error.message;
+        status.style.color = '#dc2626';
+      }
+    });
+  </script>
+</body>
+</html>
