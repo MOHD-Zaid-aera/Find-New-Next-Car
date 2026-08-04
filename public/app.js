@@ -29,7 +29,37 @@ const carGrid = document.getElementById('carGrid');
 const brandFilter = document.getElementById('brandFilter');
 const fuelFilter = document.getElementById('fuelFilter');
 const searchInput = document.getElementById('carSearch');
+const searchToggleBtn = document.getElementById('searchToggleBtn');
 let cars = [];
+
+function initSearchToggle() {
+  if (!searchToggleBtn || !searchInput) {
+    return;
+  }
+
+  const searchWrapper = searchInput.closest('.nav-search');
+
+  searchToggleBtn.addEventListener('click', () => {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      searchWrapper?.classList.toggle('mobile-search-visible');
+      searchInput.classList.toggle('mobile-search-active');
+      if (searchWrapper?.classList.contains('mobile-search-visible')) {
+        setTimeout(() => searchInput.focus(), 100);
+      }
+      return;
+    }
+
+    searchInput.focus();
+  });
+
+  searchInput.addEventListener('blur', () => {
+    if (window.innerWidth <= 768) {
+      searchWrapper?.classList.remove('mobile-search-visible');
+      searchInput.classList.remove('mobile-search-active');
+    }
+  });
+}
 
 function createCard(car) {
   const card = document.createElement('article');
@@ -140,6 +170,7 @@ brandFilter.addEventListener('change', applyFilters);
 fuelFilter.addEventListener('change', applyFilters);
 searchInput?.addEventListener('input', applyFilters);
 
+initSearchToggle();
 loadCars();
 
 function initContactForm() {
