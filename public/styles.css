@@ -121,6 +121,18 @@ main {
   flex: 1;
 }
 
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 img {
   max-width: 100%;
   display: block;

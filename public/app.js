@@ -32,6 +32,7 @@ const searchInput = document.getElementById('carSearch');
 const searchToggleBtn = document.getElementById('searchToggleBtn');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 let cars = [];
+let revealObserver = null;
 
 function initThemeToggle() {
   if (!themeToggleBtn) {
@@ -93,7 +94,7 @@ function createCard(car) {
   }
 
   const card = document.createElement('article');
-  card.className = 'car-card';
+  card.className = 'car-card reveal-on-scroll';
   const mileageLine = car.fuelType === 'Electric' ? `Range: ${car.range}` : `Mileage: ${car.mileage}`;
   const shortDescription = car.description.length > 100 ? `${car.description.slice(0, 100)}...` : car.description;
   const firstHighlight = car.highlights[0] ? `<li>${car.highlights[0]}</li>` : '';
@@ -129,6 +130,41 @@ function createCard(car) {
   return card;
 }
 
+function initRevealAnimations() {
+  const revealElements = Array.from(document.querySelectorAll('.reveal-on-scroll'));
+  if (!revealElements.length) {
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+  }
+
+  revealElements.forEach((element) => {
+    const delay = Number(element.dataset.delay || 0);
+    element.style.transitionDelay = `${delay}ms`;
+
+    if (element.classList.contains('reveal-initial')) {
+      setTimeout(() => {
+        element.classList.add('is-visible');
+      }, 180 + delay);
+    } else {
+      revealObserver.observe(element);
+    }
+  });
+}
+
 function renderCars(list) {
   if (!carGrid) {
     return;
@@ -137,10 +173,12 @@ function renderCars(list) {
   carGrid.innerHTML = '';
   if (!list.length) {
     carGrid.innerHTML = '<p class="empty-state">No cars match the selected filters.</p>';
+    initRevealAnimations();
     return;
   }
 
   list.forEach(car => carGrid.appendChild(createCard(car)));
+  initRevealAnimations();
 }
 
 function scrollToFirstMatch(list) {
@@ -227,6 +265,7 @@ if (searchInput) {
 applyStoredTheme();
 initThemeToggle();
 initSearchToggle();
+initRevealAnimations();
 loadCars();
 
 function initContactForm() {
