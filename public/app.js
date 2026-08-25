@@ -312,3 +312,71 @@ function initContactForm() {
 }
 
 initContactForm();
+
+/*
+  Auto-apply `.blue-glow` to elements whose computed color is close to the site's primary color.
+  - Excludes elements inside `.nav-links`
+  - Uses a small color-distance threshold to allow for rgba/opacity differences
+  - Observes DOM mutations to handle dynamically added content
+*/
+function hexToRgb(hex) {
+  if (!hex) return null;
+  const clean = hex.replace('#', '').trim();
+  const full = clean.length === 3 ? clean.split('').map(c => c + c).join('') : clean;
+  const num = parseInt(full, 16);
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+
+function rgbFromCssColor(col) {
+  if (!col) return null;
+  const m = col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+  if (m) return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) };
+  return null;
+}
+
+function colorDistance(a, b) {
+  return Math.sqrt(Math.pow(a.r - b.r, 2) + Math.pow(a.g - b.g, 2) + Math.pow(a.b - b.b, 2));
+}
+
+function applyBlueGlowToPrimaryText(root = document) {
+  try {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const primary = rootStyle.getPropertyValue('--primary').trim() || '#1d4ed8';
+    const primaryRgb = hexToRgb(primary);
+    if (!primaryRgb) return;
+
+    const selectors = ['a', '.offer-price', '.eyebrow', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.brand h1', '.hero-copy h2', '.section-heading h2', '.feature-card h3', '.car-card-header h3', '.product-summary h2', '.contact-copy h2', '.offer-platform', '.btn', '.btn-primary', 'button'];
+    const nodes = Array.from(root.querySelectorAll(selectors.join(',')));
+    const threshold = 70; // color distance tolerance
+
+    nodes.forEach(el => {
+      if (el.closest && el.closest('.nav-links')) return;
+      const comp = getComputedStyle(el).color;
+      const rgb = rgbFromCssColor(comp);
+      if (!rgb) return;
+      const dist = colorDistance(rgb, primaryRgb);
+      if (dist <= threshold) {
+        el.classList.add('blue-glow');
+      } else {
+        el.classList.remove('blue-glow');
+      }
+    });
+  } catch (err) {
+    console.error('applyBlueGlowToPrimaryText error', err);
+  }
+}
+
+// initial run
+document.addEventListener('DOMContentLoaded', () => applyBlueGlowToPrimaryText());
+window.addEventListener('load', () => applyBlueGlowToPrimaryText());
+
+// Observe DOM changes and re-run (debounced)
+let _bgTimeout = null;
+const _bgObserver = new MutationObserver(() => {
+  clearTimeout(_bgTimeout);
+  _bgTimeout = setTimeout(() => applyBlueGlowToPrimaryText(), 120);
+});
+_bgObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+
+// expose for manual runs in console
+window.applyBlueGlowToPrimaryText = applyBlueGlowToPrimaryText;
