@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Login/Register Form</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8fafc;
+      color: #111827;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --border: #e5e7eb;
+      --primary: #1d4ed8;
+      --primary-soft: #dbeafe;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .auth-container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: var(--surface-2);
+      padding: 0.5rem;
+      border-radius: 1rem;
+    }
+
+    .auth-tab {
+      padding: 0.85rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab:hover {
+      background: var(--surface);
+    }
+
+    .auth-tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+
+    .admin-form {
+      display: grid;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-radius: 1.25rem;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .admin-form.auth-form {
+      display: none;
+    }
+
+    .admin-form.auth-form.active {
+      display: grid;
+    }
+
+    .admin-form label {
+      display: grid;
+      gap: 0.45rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .admin-form input,
+    .admin-form select,
+    .admin-form textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.85rem;
+      font: inherit;
+      box-sizing: border-box;
+    }
+
+    .admin-form h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .btn {
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .auth-toggle-text {
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .toggle-form-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .toggle-form-btn:hover {
+      opacity: 0.8;
+    }
+
+    .status {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .status.success {
+      background: #dcfce7;
+      color: #166534;
+      display: block;
+    }
+
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login/Register Form Test</h1>
+    <p>This is a test page to verify the form switching works properly.</p>
+
+    <div class="auth-container">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Login</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="admin-form auth-form active" data-form="login">
+        <h2>Welcome Back</h2>
+        <label>Email<input type="email" name="email" placeholder="Enter your email" required></label>
+        <label>Password<input type="password" name="password" placeholder="Enter your password" required></label>
+        <button type="submit" class="btn">Login</button>
+        <p id="loginStatus" class="status"></p>
+        <p class="auth-toggle-text">Don't have an account? <button type="button" class="toggle-form-btn" data-form="register">Register here</button></p>
+      </form>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="admin-form auth-form" data-form="register">
+        <h2>Create an Account</h2>
+        <label>Full Name<input type="text" name="fullName" placeholder="Enter your full name" required></label>
+        <label>Email<input type="email" name="email" placeholder="Enter your email" required></label>
+        <label>Phone<input type="tel" name="phone" placeholder="Enter your phone number" required></label>
+        <label>Password<input type="password" name="password" placeholder="Create a password" required></label>
+        <label>Confirm Password<input type="password" name="confirmPassword" placeholder="Confirm your password" required></label>
+        <button type="submit" class="btn">Register</button>
+        <p id="registerStatus" class="status"></p>
+        <p class="auth-toggle-text">Already have an account? <button type="button" class="toggle-form-btn" data-form="login">Login here</button></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const authForms = document.querySelectorAll('.auth-form');
+    const toggleBtns = document.querySelectorAll('.toggle-form-btn');
+
+    function switchForm(formName) {
+      console.log('Switching to form:', formName);
+      authForms.forEach(form => {
+        form.classList.remove('active');
+        console.log('Removed active from form:', form.id, 'Classes:', form.className);
+      });
+      authTabs.forEach(tab => tab.classList.remove('active'));
+      
+      const targetForm = document.querySelector(`form[data-form="${formName}"]`);
+      const targetTab = document.querySelector(`.auth-tab[data-tab="${formName}"]`);
+      
+      targetForm.classList.add('active');
+      targetTab.classList.add('active');
+      
+      console.log('Added active to form:', targetForm.id, 'Classes:', targetForm.className);
+      console.log('Display style:', window.getComputedStyle(targetForm).display);
+    }
+
+    authTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        console.log('Tab clicked:', tab.dataset.tab);
+        switchForm(tab.dataset.tab);
+      });
+    });
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Toggle button clicked:', btn.dataset.form);
+        switchForm(btn.dataset.form);
+      });
+    });
+
+    // Test form submissions
+    const loginForm = document.getElementById('loginForm');
+    const loginStatus = document.getElementById('loginStatus');
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm);
+        loginStatus.textContent = `Login submitted with email: ${formData.get('email')}`;
+        loginStatus.className = 'status success';
+      });
+    }
+
+    const registerForm = document.getElementById('registerForm');
+    const registerStatus = document.getElementById('registerStatus');
+
+    if (registerForm) {
+      registerForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(registerForm);
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirmPassword');
+
+        if (password !== confirmPassword) {
+          registerStatus.textContent = 'Passwords do not match!';
+          registerStatus.className = 'status error';
+          return;
+        }
+
+        registerStatus.textContent = `Registration submitted for: ${formData.get('fullName')}`;
+        registerStatus.className = 'status success';
+      });
+    }
+
+    console.log('Script loaded. Initial forms display:');
+    authForms.forEach(form => {
+      console.log(form.id, '- Classes:', form.className, '- Display:', window.getComputedStyle(form).display);
+    });
+  </script>
+</body>
+</html>

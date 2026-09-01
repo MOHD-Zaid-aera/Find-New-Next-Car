@@ -1,0 +1,18 @@
+[
+  {
+    "id": "0816f2923997e38f",
+    "fullName": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "phone": "9876543210",
+    "password": "6b88764784990aaf0b9b948801ed5db05c01ed9284fc476cc6797d49cce6a7ca",
+    "registeredAt": "2026-09-01T12:40:46.919Z"
+  },
+  {
+    "id": "ba6969ec10f1f740",
+    "fullName": "goku",
+    "email": "powerfullgoku489@gmail.com",
+    "phone": "9802637187",
+    "password": "a81e7c646790f8710b25afc641cae24198c6117c9c6bdf730d0ec771916dd3a6",
+    "registeredAt": "2026-09-01T12:43:49.435Z"
+  }
+]

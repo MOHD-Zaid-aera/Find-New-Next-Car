@@ -9,6 +9,7 @@ const defaultPort = Number(process.env.PORT) || 4000;
 const contactsFile = path.join(__dirname, 'data', 'contacts.json');
 const ratingsFile = path.join(__dirname, 'data', 'ratings.json');
 const carsFile = path.join(__dirname, 'data', 'cars.json');
+const usersFile = path.join(__dirname, 'data', 'users.json');
 const adminUsername = process.env.ADMIN_USERNAME || 'admin';
 const adminPassword = process.env.ADMIN_PASSWORD || 'nowarise';
 const sessions = new Map();
@@ -55,6 +56,25 @@ function saveCars(cars) {
   fs.writeFileSync(carsFile, JSON.stringify(cars, null, 2), 'utf8');
 }
 
+function loadUsers() {
+  try {
+    return fs.existsSync(usersFile)
+      ? JSON.parse(fs.readFileSync(usersFile, 'utf8'))
+      : [];
+  } catch (error) {
+    console.error('Failed to load users:', error);
+    return [];
+  }
+}
+
+function saveUsers(users) {
+  fs.writeFileSync(usersFile, JSON.stringify(users, null, 2), 'utf8');
+}
+
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password + 'salt_key').digest('hex');
+}
+
 function getSessionToken(req) {
   const cookieHeader = req.headers.cookie || '';
   const cookie = cookieHeader
@@ -82,16 +102,80 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
+  // Check admin login
   if (username === adminUsername && password === adminPassword) {
     const token = crypto.randomBytes(24).toString('hex');
     sessions.set(token, { username });
     res.setHeader('Set-Cookie', `admin_session=${token}; HttpOnly; Path=/; SameSite=Lax`);
-    return res.json({ success: true });
+    return res.json({ success: true, message: 'Admin login successful' });
   }
 
-  return res.status(401).json({ error: 'Invalid username or password.' });
+  // Check user email login
+  if (email) {
+    const users = loadUsers();
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    
+    if (user && user.password === hashPassword(password)) {
+      const token = crypto.randomBytes(24).toString('hex');
+      sessions.set(token, { email: user.email, fullName: user.fullName });
+      res.setHeader('Set-Cookie', `user_session=${token}; HttpOnly; Path=/; SameSite=Lax`);
+      return res.json({ success: true, message: 'Login successful', user: { email: user.email, fullName: user.fullName } });
+    }
+    
+    return res.status(401).json({ error: 'Invalid email or password.' });
+  }
+
+  return res.status(401).json({ error: 'Invalid credentials.' });
+});
+
+app.post('/api/register', (req, res) => {
+  const { fullName, email, phone, password } = req.body;
+
+  // Validation
+  if (!fullName || !email || !phone || !password) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email format.' });
+  }
+
+  if (phone.length < 10) {
+    return res.status(400).json({ error: 'Phone number must be at least 10 digits.' });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  }
+
+  // Check if user already exists
+  const users = loadUsers();
+  const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  
+  if (existingUser) {
+    return res.status(409).json({ error: 'Email already registered. Please login or use a different email.' });
+  }
+
+  // Create new user
+  const newUser = {
+    id: crypto.randomBytes(8).toString('hex'),
+    fullName,
+    email,
+    phone,
+    password: hashPassword(password),
+    registeredAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+  saveUsers(users);
+
+  return res.status(201).json({ 
+    success: true, 
+    message: 'Registration successful! Please login with your email.',
+    user: { email: newUser.email, fullName: newUser.fullName }
+  });
 });
 
 app.post('/api/logout', (req, res) => {

@@ -33,6 +33,7 @@
         <a href="index.html#features">Features</a>
         <a href="index.html#contact">Contact</a>
         <a href="admin.html">Admin</a>
+        <a href="login.html" class="btn btn-primary">Login/Register</a>
       </nav>
     </div>
   </header>
@@ -74,6 +75,21 @@
 
   <script src="app.js"></script>
   <script>
+    // Check if admin is logged in
+    function checkAdminAuth() {
+      const adminToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('admin_session='));
+      
+      if (!adminToken) {
+        // Not logged in, redirect to login page
+        window.location.href = '/login.html';
+      }
+    }
+
+    // Check auth on page load
+    checkAdminAuth();
+
     const form = document.getElementById('adminCarForm');
     const status = document.getElementById('adminStatus');
     const inquiriesList = document.getElementById('inquiriesList');
