@@ -15,8 +15,8 @@
       <div class="brand">
         <img src="https://st2.depositphotos.com/9923666/48269/v/450/depositphotos_482692906-stock-illustration-car-garage-premium-concept-logo.jpg" alt="Indian Car Buy Logo" class="logo">
         <div>
-          <h1>Admin Login</h1>
-          <p>Only authorized admins can access the dashboard.</p>
+          <h1>Find Your Next Car</h1>
+          <p>Login or Register to get started</p>
         </div>
       </div>
       <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme" title="Switch theme">
@@ -33,57 +33,353 @@
         <a href="index.html#features">Features</a>
         <a href="index.html#contact">Contact</a>
         <a href="admin.html">Admin</a>
+        <a href="login.html" class="btn btn-primary">Login/Register</a>
       </nav>
     </div>
   </header>
 
   <main class="container admin-page">
     <section class="section">
-      <form id="loginForm" class="admin-form">
-        <label>Username<input name="username" required></label>
-        <label>Password<input name="password" type="password" required></label>
-        <button type="submit" class="btn btn-primary">Login</button>
-        <p id="loginStatus" class="contact-status"></p>
-      </form>
+      <div class="auth-container">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="admin">Admin Login</button>
+          <button class="auth-tab" data-tab="login">User Login</button>
+          <button class="auth-tab" data-tab="register">Register</button>
+        </div>
+
+        <!-- Admin Login Form -->
+        <form id="adminLoginForm" class="admin-form auth-form active" data-form="admin">
+          <h2>Admin Access</h2>
+          <label>Username<input type="text" name="username" placeholder="Enter your username" required></label>
+          <label>Password<input type="password" name="password" placeholder="Enter your password" required></label>
+          <button type="submit" class="btn btn-primary">Admin Login</button>
+          <p id="adminStatus" class="contact-status"></p>
+        </form>
+
+        <!-- User Login Form -->
+        <form id="loginForm" class="admin-form auth-form" data-form="login">
+          <h2>Welcome Back</h2>
+          <label>Email<input type="email" name="email" placeholder="Enter your email" required></label>
+          <label>Password<input type="password" name="password" placeholder="Enter your password" required></label>
+          <button type="submit" class="btn btn-primary">User Login</button>
+          <p id="loginStatus" class="contact-status"></p>
+          <p class="auth-toggle-text">Don't have an account? <button type="button" class="toggle-form-btn" data-form="register">Register here</button></p>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="registerForm" class="admin-form auth-form" data-form="register">
+          <h2>Create an Account</h2>
+          <label>Full Name<input type="text" name="fullName" placeholder="Enter your full name" required></label>
+          <label>Email<input type="email" name="email" placeholder="Enter your email" required></label>
+          <label>Phone<input type="tel" name="phone" placeholder="Enter your phone number" required></label>
+          <label>
+            Password
+            <input type="password" name="password" id="regPassword" placeholder="Create a password" required>
+            <div id="passwordStrengthContainer" class="password-strength-container">
+              <div class="strength-meter">
+                <div id="strengthMeterFill" class="strength-meter-fill"></div>
+              </div>
+              <p id="strengthText" class="strength-text">Password strength: -</p>
+              <div class="strength-requirements">
+                <div id="req-length" class="strength-requirement">At least 8 characters</div>
+                <div id="req-uppercase" class="strength-requirement">At least one uppercase letter</div>
+                <div id="req-lowercase" class="strength-requirement">At least one lowercase letter</div>
+                <div id="req-number" class="strength-requirement">At least one number</div>
+                <div id="req-special" class="strength-requirement">At least one special character (!@#$%)</div>
+              </div>
+            </div>
+          </label>
+          <label>Confirm Password<input type="password" name="confirmPassword" placeholder="Confirm your password" required></label>
+          <button type="submit" class="btn btn-primary">Register</button>
+          <p id="registerStatus" class="contact-status"></p>
+          <p class="auth-toggle-text">Already have an account? <button type="button" class="toggle-form-btn" data-form="login">Login here</button></p>
+        </form>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>© 2026 FindFriendlyCar. Secure admin access.</p>
+      <p>© 2026 FindFriendlyCar. Secure user access.</p>
     </div>
   </footer>
 
   <script src="app.js"></script>
   <script>
-    const form = document.getElementById('loginForm');
-    const status = document.getElementById('loginStatus');
+    // Password Strength Checker
+    function checkPasswordStrength(password) {
+      const requirements = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+      };
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      status.textContent = 'Checking credentials...';
-      status.style.color = '#111827';
+      let strength = 0;
+      if (requirements.length) strength++;
+      if (requirements.uppercase) strength++;
+      if (requirements.lowercase) strength++;
+      if (requirements.number) strength++;
+      if (requirements.special) strength++;
 
-      const formData = new FormData(form);
-      try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: formData.get('username'),
-            password: formData.get('password')
-          })
-        });
+      return { strength, requirements };
+    }
 
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Login failed');
+    function updatePasswordStrengthMeter() {
+      const passwordInput = document.getElementById('regPassword');
+      const password = passwordInput.value;
+      const container = document.getElementById('passwordStrengthContainer');
+      const fill = document.getElementById('strengthMeterFill');
+      const text = document.getElementById('strengthText');
 
-        window.location.href = '/admin.html';
-      } catch (error) {
-        status.textContent = error.message;
-        status.style.color = '#dc2626';
+      if (!password) {
+        container.classList.remove('visible');
+        return;
       }
+
+      container.classList.add('visible');
+      const { strength, requirements } = checkPasswordStrength(password);
+
+      // Update meter
+      fill.className = 'strength-meter-fill';
+      if (strength === 0) {
+        fill.classList.add('weak');
+        text.textContent = 'Password strength: Weak';
+        text.className = 'strength-text weak';
+      } else if (strength <= 2) {
+        fill.classList.add('weak');
+        text.textContent = 'Password strength: Weak';
+        text.className = 'strength-text weak';
+      } else if (strength === 3) {
+        fill.classList.add('fair');
+        text.textContent = 'Password strength: Fair';
+        text.className = 'strength-text fair';
+      } else if (strength === 4) {
+        fill.classList.add('good');
+        text.textContent = 'Password strength: Good';
+        text.className = 'strength-text good';
+      } else {
+        fill.classList.add('strong');
+        text.textContent = 'Password strength: Strong';
+        text.className = 'strength-text strong';
+      }
+
+      // Update requirements
+      updateRequirement('req-length', requirements.length);
+      updateRequirement('req-uppercase', requirements.uppercase);
+      updateRequirement('req-lowercase', requirements.lowercase);
+      updateRequirement('req-number', requirements.number);
+      updateRequirement('req-special', requirements.special);
+    }
+
+    function updateRequirement(id, met) {
+      const element = document.getElementById(id);
+      if (met) {
+        element.classList.add('met');
+      } else {
+        element.classList.remove('met');
+      }
+    }
+
+    // Tab switching
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const authForms = document.querySelectorAll('.auth-form');
+    const toggleBtns = document.querySelectorAll('.toggle-form-btn');
+
+    function switchForm(formName) {
+      authForms.forEach(form => form.classList.remove('active'));
+      authTabs.forEach(tab => tab.classList.remove('active'));
+      
+      document.querySelector(`form[data-form="${formName}"]`).classList.add('active');
+      document.querySelector(`.auth-tab[data-tab="${formName}"]`).classList.add('active');
+    }
+
+    authTabs.forEach(tab => {
+      tab.addEventListener('click', () => switchForm(tab.dataset.tab));
     });
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchForm(btn.dataset.form);
+      });
+    });
+
+    // Login Form Validation & Handler
+    const loginForm = document.getElementById('loginForm');
+    const loginStatus = document.getElementById('loginStatus');
+
+    if (loginForm) {
+      // Real-time validation
+      const loginInputs = loginForm.querySelectorAll('input[type="email"], input[type="password"]');
+      loginInputs.forEach(input => {
+        input.addEventListener('input', () => {
+          loginStatus.className = 'contact-status';
+          loginStatus.textContent = '';
+        });
+      });
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // Validation
+        const email = loginForm.querySelector('input[name="email"]').value.trim();
+        const password = loginForm.querySelector('input[name="password"]').value;
+
+        if (!email || !password) {
+          showStatus(loginStatus, 'Please fill in all fields', 'error');
+          return;
+        }
+
+        if (!email.includes('@')) {
+          showStatus(loginStatus, 'Please enter a valid email', 'error');
+          return;
+        }
+
+        showStatus(loginStatus, 'Logging in...', 'info');
+
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Login failed');
+
+          showStatus(loginStatus, 'Login successful! Redirecting...', 'success');
+          setTimeout(() => window.location.href = '/index.html', 1500);
+        } catch (error) {
+          showStatus(loginStatus, error.message, 'error');
+        }
+      });
+    }
+
+    // Registration Form Validation & Handler
+    const registerForm = document.getElementById('registerForm');
+    const registerStatus = document.getElementById('registerStatus');
+    const regPasswordInput = document.getElementById('regPassword');
+
+    if (regPasswordInput) {
+      regPasswordInput.addEventListener('input', updatePasswordStrengthMeter);
+    }
+
+    if (registerForm) {
+      registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(registerForm);
+        const fullName = formData.get('fullName').trim();
+        const email = formData.get('email').trim();
+        const phone = formData.get('phone').trim();
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirmPassword');
+
+        // Validation
+        if (!fullName || !email || !phone || !password || !confirmPassword) {
+          showStatus(registerStatus, 'Please fill in all fields', 'error');
+          return;
+        }
+
+        if (!email.includes('@')) {
+          showStatus(registerStatus, 'Please enter a valid email', 'error');
+          return;
+        }
+
+        if (phone.length < 10) {
+          showStatus(registerStatus, 'Phone number must be at least 10 digits', 'error');
+          return;
+        }
+
+        const { strength } = checkPasswordStrength(password);
+        if (strength < 3) {
+          showStatus(registerStatus, 'Password is too weak. Please meet more requirements', 'error');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showStatus(registerStatus, 'Passwords do not match!', 'error');
+          return;
+        }
+
+        showStatus(registerStatus, 'Creating account...', 'info');
+
+        try {
+          const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fullName,
+              email,
+              phone,
+              password
+            })
+          });
+
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Registration failed');
+
+          showStatus(registerStatus, 'Registration successful! Please login.', 'success');
+          setTimeout(() => switchForm('login'), 2000);
+        } catch (error) {
+          showStatus(registerStatus, error.message, 'error');
+        }
+      });
+    }
+
+    // Admin Login Form Handler
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminStatus = document.getElementById('adminStatus');
+
+    if (adminLoginForm) {
+      // Real-time validation
+      const adminInputs = adminLoginForm.querySelectorAll('input');
+      adminInputs.forEach(input => {
+        input.addEventListener('input', () => {
+          adminStatus.className = 'contact-status';
+          adminStatus.textContent = '';
+        });
+      });
+
+      adminLoginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // Validation
+        const username = adminLoginForm.querySelector('input[name="username"]').value.trim();
+        const password = adminLoginForm.querySelector('input[name="password"]').value;
+
+        if (!username || !password) {
+          showStatus(adminStatus, 'Please fill in all fields', 'error');
+          return;
+        }
+
+        showStatus(adminStatus, 'Logging in...', 'info');
+
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Login failed');
+
+          showStatus(adminStatus, 'Login successful! Redirecting...', 'success');
+          setTimeout(() => window.location.href = '/admin.html', 1500);
+        } catch (error) {
+          showStatus(adminStatus, error.message, 'error');
+        }
+      });
+    }
+
+    // Helper function to show status messages
+    function showStatus(element, message, type) {
+      element.textContent = message;
+      element.className = `contact-status ${type}`;
+    }
   </script>
 </body>
 </html>
