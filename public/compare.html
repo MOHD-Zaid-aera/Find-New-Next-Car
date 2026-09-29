@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Cars | CarBuy India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="https://st2.depositphotos.com/9923666/48269/v/450/depositphotos_482692906-stock-illustration-car-garage-premium-concept-logo.jpg" alt="CarBuy India" class="logo">
+        <div><h1>CarBuy India</h1></div>
+      </div>
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <span class="theme-toggle-icon">&#127769;</span>
+      </button>
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navMenu">
+        <a href="index.html">Home</a>
+        <a href="index.html#cars">Cars</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container cmp-page">
+    <a class="btn btn-secondary btn-back" href="index.html">&larr; Back to cars</a>
+    <div class="cmp-hero">
+      <p class="eyebrow">Side by Side</p>
+      <h2>Car Comparison</h2>
+      <p class="cmp-subtitle">Compare specs, price, mileage and more at a glance.</p>
+    </div>
+    <div id="compareEmpty" class="cmp-empty" style="display:none">
+      <p>Select at least 2 cars from the <a href="index.html">car listing</a> to compare.</p>
+    </div>
+    <div id="compareContent"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 FindFriendlyCar. Designed for Indian car buyers.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="compare.js"></script>
+</body>
+</html>
