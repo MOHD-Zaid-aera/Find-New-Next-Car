@@ -1,6 +1,6 @@
-﻿/* app.js - shared across all pages */
+﻿// app.js - CarBuy India
 
-/* --- Theme --- */
+// THEME (run immediately)
 (function () {
   var saved = localStorage.getItem("theme") || "light";
   document.body.classList.toggle("dark-theme", saved === "dark");
@@ -8,6 +8,16 @@
   if (icon) icon.textContent = saved === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19";
 }());
 
+// SERVICE WORKER (caching only - no install prompt)
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/service-worker.js").catch(function (err) {
+      console.warn("SW registration failed:", err);
+    });
+  });
+}
+
+// THEME TOGGLE BUTTON
 var themeToggleBtn = document.getElementById("themeToggleBtn");
 if (themeToggleBtn) {
   themeToggleBtn.addEventListener("click", function () {
@@ -18,7 +28,7 @@ if (themeToggleBtn) {
   });
 }
 
-/* --- Mobile menu --- */
+// MOBILE MENU
 var mobileMenuBtn = document.getElementById("mobileMenuBtn");
 var navMenu = document.getElementById("navMenu");
 if (mobileMenuBtn && navMenu) {
@@ -40,7 +50,20 @@ if (mobileMenuBtn && navMenu) {
   });
 }
 
-/* --- Search toggle --- */
+// ADMIN NAV BUTTON - opens auth modal on admin tab
+document.addEventListener("DOMContentLoaded", function () {
+  var adminNavBtn = document.getElementById("adminNavBtn");
+  if (adminNavBtn) {
+    adminNavBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.carbuyOpenAuthModal) {
+        window.carbuyOpenAuthModal("admin");
+      }
+    });
+  }
+});
+
+// SEARCH TOGGLE
 var searchToggleBtn = document.getElementById("searchToggleBtn");
 var searchInput = document.getElementById("carSearch");
 function initSearchToggle() {
@@ -63,7 +86,7 @@ function initSearchToggle() {
   });
 }
 
-/* --- Reveal on scroll --- */
+// REVEAL ON SCROLL
 var revealObserver = null;
 function initRevealAnimations() {
   var elements = Array.from(document.querySelectorAll(".reveal-on-scroll"));
@@ -73,7 +96,7 @@ function initRevealAnimations() {
       entries.forEach(function (entry) {
         entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
   }
   elements.forEach(function (el) {
     var delay = Number(el.dataset.delay || 0);
@@ -84,16 +107,192 @@ function initRevealAnimations() {
   });
 }
 
-/* ══════════════════════════════════════════
-   COMPARE FEATURE
-   ══════════════════════════════════════════ */
-var compareIds = [];
+// USER PROFILE
+var USER_KEY = "carbuy_user";
+function getUser() { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (e) { return null; } }
+function saveUser(data) { localStorage.setItem(USER_KEY, JSON.stringify(data)); }
+function clearUser() { localStorage.removeItem(USER_KEY); }
+
+function showUserInNav(user) {
+  var navUser    = document.getElementById("navUser");
+  var loginBtn   = document.getElementById("openAuthModal");
+  var avatarEl   = document.getElementById("navUserAvatar");
+  var nameEl     = document.getElementById("navUserName");
+  var dropAvatar = document.getElementById("dropdownAvatar");
+  var dropName   = document.getElementById("dropdownUserName");
+  var dropEmail  = document.getElementById("dropdownUserEmail");
+  if (!navUser) return;
+  var first = (user.fullName || user.name || "U").charAt(0).toUpperCase();
+  var hue   = (user.email || "").split("").reduce(function (a, c) { return a + c.charCodeAt(0); }, 0) % 360;
+  navUser.style.display   = "flex";
+  if (loginBtn) loginBtn.style.display = "none";
+  if (avatarEl) { avatarEl.textContent = first; avatarEl.style.background = "hsl(" + hue + ",60%,46%)"; }
+  if (nameEl)   nameEl.textContent = (user.fullName || user.name || "").split(" ")[0];
+  if (dropAvatar){ dropAvatar.textContent = first; dropAvatar.style.background = "hsl(" + hue + ",60%,46%)"; }
+  if (dropName)  dropName.textContent  = user.fullName || user.name || "";
+  if (dropEmail) dropEmail.textContent = user.email || "";
+}
+
+function hideUserFromNav() {
+  var navUser  = document.getElementById("navUser");
+  var loginBtn = document.getElementById("openAuthModal");
+  if (navUser)  navUser.style.display  = "none";
+  if (loginBtn) loginBtn.style.display = "";
+}
+
+function initUserProfile() {
+  var user = getUser();
+  if (user) showUserInNav(user);
+
+  var navUserBtn = document.getElementById("navUserBtn");
+  var dropdown   = document.getElementById("navUserDropdown");
+  if (navUserBtn && dropdown) {
+    navUserBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      dropdown.classList.toggle("active");
+    });
+    document.addEventListener("click", function () { dropdown.classList.remove("active"); });
+    dropdown.addEventListener("click", function (e) { e.stopPropagation(); });
+  }
+
+  var logoutBtn = document.getElementById("navLogout");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      clearUser();
+      hideUserFromNav();
+      if (dropdown) dropdown.classList.remove("active");
+      showToast("Signed out successfully.");
+    });
+  }
+
+  var dropWishlist = document.getElementById("dropdownWishlist");
+  if (dropWishlist) {
+    dropWishlist.addEventListener("click", function () {
+      if (dropdown) dropdown.classList.remove("active");
+      openWishlistDrawer();
+    });
+  }
+}
+
+window.carbuyShowUser = function (user) {
+  saveUser(user);
+  showUserInNav(user);
+};
+
+// WISHLIST
+var WL_KEY = "carbuy_wishlist";
+function getWishlist() { try { return JSON.parse(localStorage.getItem(WL_KEY)) || []; } catch (e) { return []; } }
+function saveWishlist(list) { localStorage.setItem(WL_KEY, JSON.stringify(list)); }
+function isWishlisted(id) { return getWishlist().indexOf(String(id)) > -1; }
+
+function toggleWishlist(id, allCars) {
+  id = String(id);
+  var list = getWishlist();
+  var idx  = list.indexOf(id);
+  if (idx > -1) { list.splice(idx, 1); } else { list.push(id); }
+  saveWishlist(list);
+  updateWishlistBadge();
+  refreshHeartButtons();
+  var backdrop = document.getElementById("wishlistBackdrop");
+  if (backdrop && backdrop.classList.contains("active")) renderWishlistContent(allCars);
+}
+
+function updateWishlistBadge() {
+  var badge = document.getElementById("wishlistBadge");
+  var count = getWishlist().length;
+  if (!badge) return;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? "flex" : "none";
+  var btn = document.getElementById("wishlistNavBtn");
+  if (btn) btn.classList.toggle("has-wishlist", count > 0);
+}
+
+function refreshHeartButtons() {
+  document.querySelectorAll(".heart-btn").forEach(function (btn) {
+    var on = isWishlisted(btn.dataset.id);
+    btn.classList.toggle("heart-on", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.title = on ? "Remove from wishlist" : "Add to wishlist";
+  });
+}
+
+function renderWishlistContent(allCars) {
+  var content = document.getElementById("wishlistContent");
+  if (!content) return;
+  var list = getWishlist();
+  if (!list.length) {
+    content.innerHTML =
+      '<div class="wl-empty">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
+        "<p>Your wishlist is empty.</p>" +
+        '<a href="#cars" class="btn btn-primary wl-browse-btn" id="wlBrowseBtn">Browse Cars</a>' +
+      "</div>";
+    var b = document.getElementById("wlBrowseBtn");
+    if (b) b.addEventListener("click", closeWishlistDrawer);
+    return;
+  }
+  var wlCars = list.map(function (id) {
+    return (allCars || []).find(function (c) { return String(c.id) === id; });
+  }).filter(Boolean);
+
+  content.innerHTML = wlCars.map(function (car) {
+    var mileage = car.fuelType === "Electric" ? (car.range || "N/A") + " range" : (car.mileage || "N/A");
+    return '<div class="wl-card">' +
+      '<img src="' + car.imageUrl + '" alt="' + car.brand + " " + car.model +
+      '" onerror="this.onerror=null;this.src=\'images/car-placeholder.svg\'" />' +
+      '<div class="wl-info">' +
+        '<p class="wl-brand">' + car.brand + "</p>" +
+        '<h4 class="wl-name">' + car.brand + " " + car.model + "</h4>" +
+        '<p class="wl-meta">' + car.price + " \u00B7 " + mileage + "</p>" +
+      "</div>" +
+      '<div class="wl-actions">' +
+        '<a class="btn btn-primary wl-view-btn" href="product.html?id=' + car.id + '">View</a>' +
+        '<button class="wl-remove-btn" data-id="' + car.id + '" aria-label="Remove">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4h6v2"/></svg>' +
+        "</button>" +
+      "</div>" +
+    "</div>";
+  }).join("");
+
+  content.querySelectorAll(".wl-remove-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () { toggleWishlist(btn.dataset.id, allCars); });
+  });
+}
+
+function openWishlistDrawer() {
+  var backdrop = document.getElementById("wishlistBackdrop");
+  if (!backdrop) return;
+  renderWishlistContent(window._allCars || []);
+  backdrop.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeWishlistDrawer() {
+  var backdrop = document.getElementById("wishlistBackdrop");
+  if (!backdrop) return;
+  backdrop.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function initWishlistDrawer() {
+  var backdrop  = document.getElementById("wishlistBackdrop");
+  var closeBtn  = document.getElementById("wishlistCloseBtn");
+  var navWlBtn  = document.getElementById("wishlistNavBtn");
+  if (backdrop) backdrop.addEventListener("click", function (e) { if (e.target === backdrop) closeWishlistDrawer(); });
+  if (closeBtn) closeBtn.addEventListener("click", closeWishlistDrawer);
+  if (navWlBtn) navWlBtn.addEventListener("click", openWishlistDrawer);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWishlistDrawer(); });
+  updateWishlistBadge();
+}
+
+// COMPARE FEATURE
+var compareIds  = [];
 var MAX_COMPARE = 3;
-var compareBar = null;
+var compareBar  = null;
 
 function initCompareBar() {
   compareBar = document.createElement("div");
-  compareBar.id = "compareBar";
+  compareBar.id        = "compareBar";
   compareBar.className = "compare-bar";
   compareBar.innerHTML =
     '<div class="compare-bar-inner">' +
@@ -105,89 +304,129 @@ function initCompareBar() {
       '</div>' +
     '</div>';
   document.body.appendChild(compareBar);
-
   document.getElementById("compareClearBtn").addEventListener("click", clearCompare);
   document.getElementById("compareGoBtn").addEventListener("click", function () {
-    if (compareIds.length >= 2) {
-      window.location.href = "compare.html?ids=" + compareIds.join(",");
-    }
+    if (compareIds.length >= 2) window.location.href = "compare.html?ids=" + compareIds.join(",");
   });
 }
 
-function updateCompareBar(cars) {
+function updateCompareBar(allCars) {
   if (!compareBar) return;
   var slots = document.getElementById("compareSlots");
   var count = document.getElementById("compareCount");
   var goBtn = document.getElementById("compareGoBtn");
-
   compareBar.classList.toggle("compare-bar-visible", compareIds.length > 0);
   if (count) count.textContent = compareIds.length + " / " + MAX_COMPARE + " selected";
   if (goBtn) goBtn.disabled = compareIds.length < 2;
-
   if (!slots) return;
   slots.innerHTML = compareIds.map(function (id) {
-    var car = cars.find(function (c) { return String(c.id) === id; });
+    var car = (allCars || []).find(function (c) { return String(c.id) === id; });
     if (!car) return "";
-    return '<div class="compare-slot">' +
-      '<img src="' + car.imageUrl + '" alt="' + car.brand + ' ' + car.model +
-      '" onerror="this.onerror=null;this.src=\'images/car-placeholder.svg\'" />' +
-      '<span class="compare-slot-name">' + car.brand + ' ' + car.model + '</span>' +
-      '<button class="compare-slot-remove" data-id="' + car.id + '" aria-label="Remove">&times;</button>' +
-    '</div>';
-  }).join('');
-
+    return '<div class="compare-slot"><img src="' + car.imageUrl +
+      '" alt="" onerror="this.onerror=null;this.src=\'images/car-placeholder.svg\'" />' +
+      '<span class="compare-slot-name">' + car.brand + " " + car.model + "</span>" +
+      '<button class="compare-slot-remove" data-id="' + car.id + '" aria-label="Remove">&times;</button></div>';
+  }).join("");
   slots.querySelectorAll(".compare-slot-remove").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      toggleCompare(btn.dataset.id, cars);
-    });
+    btn.addEventListener("click", function () { toggleCompare(btn.dataset.id, allCars); });
   });
 }
 
-function toggleCompare(id, cars) {
+function toggleCompare(id, allCars) {
   var idx = compareIds.indexOf(id);
-  if (idx > -1) {
-    compareIds.splice(idx, 1);
-  } else {
-    if (compareIds.length >= MAX_COMPARE) {
-      showCompareToast("Max " + MAX_COMPARE + " cars can be compared at once.");
-      return;
-    }
+  if (idx > -1) { compareIds.splice(idx, 1); }
+  else {
+    if (compareIds.length >= MAX_COMPARE) { showToast("Max " + MAX_COMPARE + " cars can be compared."); return; }
     compareIds.push(id);
   }
-  refreshCompareButtons(cars);
-  updateCompareBar(cars);
+  refreshCompareButtons();
+  updateCompareBar(allCars);
 }
 
-function refreshCompareButtons(cars) {
+function refreshCompareButtons() {
   document.querySelectorAll(".compare-btn").forEach(function (btn) {
-    var id = btn.dataset.id;
-    var active = compareIds.indexOf(id) > -1;
-    btn.classList.toggle("compare-btn-active", active);
-    btn.textContent = active ? "\u2713 Added" : "+ Compare";
-    btn.setAttribute("aria-pressed", active ? "true" : "false");
+    var on = compareIds.indexOf(btn.dataset.id) > -1;
+    btn.classList.toggle("compare-btn-active", on);
+    btn.textContent = on ? "\u2713 Added" : "+ Compare";
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
   });
 }
 
 function clearCompare() {
   compareIds = [];
-  var cars = window._allCars || [];
-  refreshCompareButtons(cars);
-  updateCompareBar(cars);
+  refreshCompareButtons();
+  updateCompareBar(window._allCars || []);
 }
 
-function showCompareToast(msg) {
+// TOAST
+function showToast(msg) {
   var t = document.createElement("div");
-  t.className = "compare-toast";
+  t.className   = "compare-toast";
   t.textContent = msg;
   document.body.appendChild(t);
   requestAnimationFrame(function () { t.classList.add("compare-toast-show"); });
   setTimeout(function () {
     t.classList.remove("compare-toast-show");
-    setTimeout(function () { t.remove(); }, 400);
+    setTimeout(function () { t.remove(); }, 420);
   }, 2600);
 }
 
-/* --- Car grid --- */
+// PRICE RANGE SLIDER
+var priceRange  = { min: 0, max: Infinity };
+var sliderReady = false;
+
+function parsePriceLakh(car) {
+  var s = String(car.price || "").toLowerCase();
+  var m = s.match(/([\d.]+)\s*(lakh|lac|cr|crore)/i);
+  if (!m) { var n = parseFloat(s.replace(/[^\d.]/g, "")); return isNaN(n) ? 0 : n; }
+  var n = parseFloat(m[1]);
+  return /cr/i.test(m[2]) ? n * 100 : n;
+}
+
+function initPriceSlider(allCars) {
+  var minSlider = document.getElementById("priceMinSlider");
+  var maxSlider = document.getElementById("priceMaxSlider");
+  var label     = document.getElementById("priceRangeDisplay");
+  var fill      = document.getElementById("priceFill");
+  if (!minSlider || !maxSlider) return;
+
+  var prices  = allCars.map(parsePriceLakh).filter(function (p) { return p > 0; });
+  var dataMin = Math.floor(Math.min.apply(null, prices));
+  var dataMax = Math.ceil(Math.max.apply(null, prices));
+
+  minSlider.min = dataMin; minSlider.max = dataMax; minSlider.value = dataMin;
+  maxSlider.min = dataMin; maxSlider.max = dataMax; maxSlider.value = dataMax;
+  priceRange = { min: dataMin, max: dataMax };
+  sliderReady = true;
+  updateSliderUI(minSlider, maxSlider, dataMin, dataMax, fill, label);
+
+  function onSlide() {
+    var lo = parseInt(minSlider.value), hi = parseInt(maxSlider.value);
+    if (lo > hi) { if (this === minSlider) minSlider.value = hi; else maxSlider.value = lo; }
+    lo = parseInt(minSlider.value); hi = parseInt(maxSlider.value);
+    priceRange = { min: lo, max: hi };
+    updateSliderUI(minSlider, maxSlider, dataMin, dataMax, fill, label);
+    applyFilters();
+  }
+  minSlider.addEventListener("input", onSlide);
+  maxSlider.addEventListener("input", onSlide);
+}
+
+function updateSliderUI(minSlider, maxSlider, dataMin, dataMax, fill, label) {
+  var lo   = parseInt(minSlider.value);
+  var hi   = parseInt(maxSlider.value);
+  var span = dataMax - dataMin || 1;
+  var lp   = ((lo - dataMin) / span) * 100;
+  var rp   = ((hi - dataMin) / span) * 100;
+  if (fill) { fill.style.left = lp + "%"; fill.style.width = (rp - lp) + "%"; }
+  if (label) {
+    label.textContent = (lo === dataMin && hi === dataMax)
+      ? "All prices"
+      : "\u20B9" + lo + "L \u2014 \u20B9" + hi + "L";
+  }
+}
+
+// CAR GRID
 var carGrid     = document.getElementById("carGrid");
 var brandFilter = document.getElementById("brandFilter");
 var fuelFilter  = document.getElementById("fuelFilter");
@@ -197,7 +436,6 @@ function createCard(car) {
   if (!carGrid) return null;
   var card = document.createElement("article");
   card.className = "car-card reveal-on-scroll";
-
   var mileageLine = car.fuelType === "Electric"
     ? "Range: " + (car.range || "N/A")
     : "Mileage: " + (car.mileage || "N/A");
@@ -206,10 +444,17 @@ function createCard(car) {
     : (car.description || "");
   var highlights = Array.isArray(car.highlights) ? car.highlights : [];
   var firstHighlight = highlights[0] ? "<li>" + highlights[0] + "</li>" : "";
+  var wlOn = isWishlisted(car.id);
 
   card.innerHTML =
-    '<img src="' + car.imageUrl + '" alt="' + car.brand + " " + car.model +
-    '" loading="lazy" onerror="this.onerror=null;this.src=\'images/car-placeholder.svg\'" />' +
+    '<div class="car-card-img-wrap">' +
+      '<img src="' + car.imageUrl + '" alt="' + car.brand + " " + car.model +
+      '" loading="lazy" onerror="this.onerror=null;this.src=\'images/car-placeholder.svg\'" />' +
+      '<button class="heart-btn' + (wlOn ? " heart-on" : "") + '" data-id="' + car.id +
+      '" aria-pressed="' + (wlOn ? "true" : "false") + '" title="' + (wlOn ? "Remove from wishlist" : "Add to wishlist") + '">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
+      "</button>" +
+    "</div>" +
     '<div class="car-card-header"><div>' +
       "<h3>" + car.brand + " " + car.model + "</h3>" +
       "<p>" + (car.segment || "") + " \u00B7 " + car.fuelType + "</p>" +
@@ -224,8 +469,12 @@ function createCard(car) {
     "</div>" +
     '<div class="car-card-footer">' +
       '<button class="compare-btn" data-id="' + car.id + '" aria-pressed="false">+ Compare</button>' +
-    '</div>';
+    "</div>";
 
+  card.querySelector(".heart-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    toggleWishlist(car.id, cars);
+  });
   card.querySelector(".compare-btn").addEventListener("click", function (e) {
     e.stopPropagation();
     toggleCompare(String(car.id), cars);
@@ -265,15 +514,23 @@ function applyFilters() {
   var brand = brandFilter ? brandFilter.value : "all";
   var fuel  = fuelFilter  ? fuelFilter.value  : "all";
   var term  = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  var loP   = sliderReady ? priceRange.min : 0;
+  var hiP   = sliderReady ? priceRange.max : Infinity;
+
   var filtered = cars.filter(function (car) {
     var bm = brand === "all" || car.brand === brand;
     var fm = fuel  === "all" || car.fuelType === fuel;
     var sm = !term || [car.brand, car.model, car.description, car.segment, car.fuelType]
       .some(function (v) { return String(v || "").toLowerCase().includes(term); });
-    return bm && fm && sm;
+    var price = parsePriceLakh(car);
+    var pm = !sliderReady || (price >= loP && price <= hiP);
+    return bm && fm && sm && pm;
   });
+
   renderCars(filtered);
-  refreshCompareButtons(cars);
+  refreshCompareButtons();
+  refreshHeartButtons();
+
   if (term && filtered.length) {
     var first = carGrid.querySelector(".car-card");
     if (first) {
@@ -290,9 +547,11 @@ async function loadCars() {
     var res = await fetch("/api/cars");
     cars = await res.json();
     window._allCars = cars;
-    initCompareBar();
     populateBrandFilter(cars);
+    initPriceSlider(cars);
+    initCompareBar();
     renderCars(cars);
+    updateWishlistBadge();
   } catch (err) {
     carGrid.innerHTML = '<p class="empty-state">Unable to load car data. Please try again.</p>';
     console.error("Failed to load cars:", err);
@@ -303,7 +562,7 @@ if (brandFilter) brandFilter.addEventListener("change", applyFilters);
 if (fuelFilter)  fuelFilter.addEventListener("change",  applyFilters);
 if (searchInput) searchInput.addEventListener("input",   applyFilters);
 
-/* --- Contact form --- */
+// CONTACT FORM
 function initContactForm() {
   var form   = document.getElementById("contactForm");
   var status = document.getElementById("contactStatus");
@@ -334,8 +593,10 @@ function initContactForm() {
   });
 }
 
-/* --- Init --- */
+// INIT
 initSearchToggle();
 initRevealAnimations();
+initUserProfile();
+initWishlistDrawer();
 loadCars();
 initContactForm();

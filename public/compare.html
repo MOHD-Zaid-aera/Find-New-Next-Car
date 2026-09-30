@@ -6,7 +6,7 @@
   <title>Compare Cars | CarBuy India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -31,15 +31,28 @@
     </div>
   </header>
 
-  <main class="container cmp-page">
-    <a class="btn btn-secondary btn-back" href="index.html">&larr; Back to cars</a>
-    <div class="cmp-hero">
-      <p class="eyebrow">Side by Side</p>
-      <h2>Car Comparison</h2>
-      <p class="cmp-subtitle">Compare specs, price, mileage and more at a glance.</p>
+  <!-- Compare Hero -->
+  <div class="cmp-hero-banner">
+    <div class="cmp-hero-blob cmp-hero-blob-1"></div>
+    <div class="cmp-hero-blob cmp-hero-blob-2"></div>
+    <div class="container cmp-hero-inner">
+      <a class="btn btn-secondary btn-back" href="index.html">&larr; Back to cars</a>
+      <div class="cmp-hero-text">
+        <p class="eyebrow">Side by Side</p>
+        <h2>Car Comparison</h2>
+        <p id="compareTitleCount" class="cmp-hero-sub">Compare detailed specs instantly</p>
+      </div>
     </div>
+  </div>
+
+  <main class="container cmp-page">
     <div id="compareEmpty" class="cmp-empty" style="display:none">
-      <p>Select at least 2 cars from the <a href="index.html">car listing</a> to compare.</p>
+      <div class="cmp-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+      </div>
+      <h3>No cars to compare</h3>
+      <p>Select at least 2 cars from the listing to compare them side by side.</p>
+      <a href="index.html" class="btn btn-primary">Browse Cars</a>
     </div>
     <div id="compareContent"></div>
   </main>

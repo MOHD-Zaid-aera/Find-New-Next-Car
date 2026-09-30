@@ -162,8 +162,9 @@
       var res  = await fetch("/api/login",{ method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email:email,password:password}) });
       var data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
-      setStatus("loginStatus","Login successful! Redirecting…","success");
-      setTimeout(function(){ closeModal(); window.location.href="/index.html"; },1400);
+      setStatus("loginStatus","Login successful! Welcome back!","success");
+      if (window.carbuyShowUser) window.carbuyShowUser({ fullName: data.fullName || email.split("@")[0], email: email });
+      setTimeout(function(){ closeModal(); },1200);
     } catch(err) { setStatus("loginStatus",err.message,"error"); }
     finally { setLoading("loginSubmit",false); }
   });
@@ -188,8 +189,9 @@
       var res  = await fetch("/api/register",{ method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({fullName:fullName,email:email,phone:phone,password:password}) });
       var data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed");
-      setStatus("registerStatus","Account created! Please sign in.","success");
-      setTimeout(function(){ switchTab("login"); },2000);
+      setStatus("registerStatus","Account created! You can now sign in.","success");
+      if (window.carbuyShowUser) window.carbuyShowUser({ fullName: fullName, email: email });
+      setTimeout(function(){ closeModal(); },1400);
     } catch(err) { setStatus("registerStatus",err.message,"error"); }
     finally { setLoading("registerSubmit",false); }
   });
@@ -216,4 +218,10 @@
   /* ─── Init ─── */
   requestAnimationFrame(function(){ moveIndicator("login"); });
 
-})();
+
+  // Expose globally so any code can open a specific tab
+  window.carbuyOpenAuthModal = function (tab) {
+    openModal(tab || "login");
+  };
+
+}());

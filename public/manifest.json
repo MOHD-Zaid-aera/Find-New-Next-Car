@@ -1,0 +1,19 @@
+﻿{
+  "name": "CarBuy India",
+  "short_name": "CarBuy",
+  "description": "Find, compare and buy the best cars in India",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "images/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["automotive", "shopping"],
+  "shortcuts": [
+    { "name": "Browse Cars", "url": "/#cars", "description": "Browse all available cars" },
+    { "name": "Compare Cars", "url": "/compare.html", "description": "Compare cars side by side" }
+  ]
+}
