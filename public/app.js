@@ -1,4 +1,4 @@
-﻿// app.js - CarBuy India
+// app.js - CarBuy India
 
 // THEME (run immediately)
 (function () {
@@ -29,38 +29,87 @@ if (themeToggleBtn) {
 }
 
 // MOBILE MENU
+// ── Scroll shadow ──
+window.addEventListener("scroll", function () {
+  var h = document.getElementById("siteHeader");
+  if (h) h.classList.toggle("scrolled", window.scrollY > 10);
+}, { passive: true });
+
+// ── Right Drawer ──
 var mobileMenuBtn = document.getElementById("mobileMenuBtn");
-var navMenu = document.getElementById("navMenu");
-if (mobileMenuBtn && navMenu) {
-  mobileMenuBtn.addEventListener("click", function () {
-    mobileMenuBtn.classList.toggle("active");
-    navMenu.classList.toggle("active");
-  });
-  navMenu.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      mobileMenuBtn.classList.remove("active");
-      navMenu.classList.remove("active");
-    });
-  });
-  document.addEventListener("click", function (e) {
-    if (!e.target.closest(".site-header")) {
-      mobileMenuBtn.classList.remove("active");
-      navMenu.classList.remove("active");
-    }
-  });
+var navDrawer     = document.getElementById("navDrawer");
+var drawerBackdrop = document.getElementById("drawerBackdrop");
+
+function openDrawer() {
+  if (!navDrawer) return;
+  navDrawer.classList.add("is-open");
+  navDrawer.setAttribute("aria-hidden", "false");
+  if (drawerBackdrop) drawerBackdrop.classList.add("is-open");
+  if (mobileMenuBtn) mobileMenuBtn.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+}
+function closeDrawer() {
+  if (!navDrawer) return;
+  navDrawer.classList.remove("is-open");
+  navDrawer.setAttribute("aria-hidden", "true");
+  if (drawerBackdrop) drawerBackdrop.classList.remove("is-open");
+  if (mobileMenuBtn) mobileMenuBtn.classList.remove("is-open");
+  document.body.style.overflow = "";
 }
 
-// ADMIN NAV BUTTON - opens auth modal on admin tab
+if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", function (e) { e.stopPropagation(); openDrawer(); });
+if (drawerBackdrop) drawerBackdrop.addEventListener("click", closeDrawer);
+var drawerCloseBtn = document.getElementById("drawerCloseBtn");
+if (drawerCloseBtn) drawerCloseBtn.addEventListener("click", closeDrawer);
+if (navDrawer) {
+  navDrawer.querySelectorAll(".drawer-lnk").forEach(function (l) {
+    l.addEventListener("click", closeDrawer);
+  });
+}
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeDrawer(); closeMobSearch(); } });
+
+// ── Mobile search slide-down ──
+var mobSearchToggle = document.getElementById("mobSearchToggle");
+var mobSrchBar      = document.getElementById("mobSrchBar");
+var mobSrchInput    = document.getElementById("mobileCarSearch");
+var mobSrchClose    = document.getElementById("mobSrchClose");
+
+function openMobSearch() {
+  if (!mobSrchBar) return;
+  mobSrchBar.classList.add("is-open");
+  if (mobSrchInput) setTimeout(function () { mobSrchInput.focus(); }, 120);
+}
+function closeMobSearch() {
+  if (!mobSrchBar) return;
+  mobSrchBar.classList.remove("is-open");
+  if (mobSrchInput) mobSrchInput.blur();
+}
+
+if (mobSearchToggle) mobSearchToggle.addEventListener("click", function () {
+  if (mobSrchBar && mobSrchBar.classList.contains("is-open")) { closeMobSearch(); }
+  else { openMobSearch(); }
+});
+if (mobSrchClose) mobSrchClose.addEventListener("click", closeMobSearch);
+
+// Sync mobile search with desktop search input
 document.addEventListener("DOMContentLoaded", function () {
-  var adminNavBtn = document.getElementById("adminNavBtn");
-  if (adminNavBtn) {
-    adminNavBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (window.carbuyOpenAuthModal) {
-        window.carbuyOpenAuthModal("admin");
-      }
+  if (mobSrchInput && searchInput) {
+    mobSrchInput.addEventListener("input", function () {
+      searchInput.value = mobSrchInput.value;
+      applyFilters();
     });
   }
+
+  // Drawer admin button
+  var drawerAdminBtn = document.getElementById("drawerAdminBtn");
+  if (drawerAdminBtn) {
+    drawerAdminBtn.addEventListener("click", function () {
+      closeDrawer();
+      if (window.carbuyOpenAuthModal) window.carbuyOpenAuthModal("admin");
+    });
+  }
+
+    }
 });
 
 // SEARCH TOGGLE
